@@ -98,32 +98,29 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
   };
 
   const inputClass =
-    'form-input w-full rounded-lg px-3.5 py-2.5 text-sm text-slate-200 placeholder-slate-500';
-  const labelClass = 'block text-sm font-medium text-slate-300 mb-1.5';
+    'w-full rounded-lg px-3.5 py-2 text-sm text-zinc-200 placeholder-zinc-600 bg-zinc-800 border border-zinc-700 focus:border-zinc-500 focus:outline-none transition-colors';
+  const labelClass = 'block text-sm font-medium text-zinc-300 mb-1.5';
   const errorClass = 'text-red-400 text-xs mt-1.5';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center modal-overlay" role="dialog" aria-label={server ? 'Edit server' : 'Add server'}>
-      <div className="modal-panel rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto m-4 animate-fade-in-up">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-          <h2 className="text-lg font-semibold text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" role="dialog" aria-label={server ? 'Edit server' : 'Add server'}>
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto m-4 shadow-2xl animate-fade-in">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+          <h2 className="text-base font-medium text-zinc-100">
             {server ? 'Edit Server' : 'Add Server'}
           </h2>
           <button
             onClick={onCancel}
             aria-label="Close dialog"
-            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-slate-200 transition-all duration-200"
+            className="w-7 h-7 rounded-md bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-zinc-400 hover:text-zinc-200 transition-colors"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          {/* Server Name */}
           <div>
             <label className={labelClass}>Server Name</label>
             <input
@@ -136,7 +133,6 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
             {errors.name && <p className={errorClass}>{errors.name}</p>}
           </div>
 
-          {/* Transport Type */}
           <div>
             <label className={labelClass}>Transport Type</label>
             <select
@@ -149,7 +145,6 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
             </select>
           </div>
 
-          {/* Command (stdio) */}
           {transportType === 'stdio' && (
             <div>
               <label className={labelClass}>Command</label>
@@ -164,7 +159,6 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
             </div>
           )}
 
-          {/* URL (sse) */}
           {transportType === 'sse' && (
             <div>
               <label className={labelClass}>URL</label>
@@ -179,7 +173,6 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
             </div>
           )}
 
-          {/* Args */}
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className={labelClass}>Arguments</label>
@@ -192,7 +185,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
               </button>
             </div>
             {args.length === 0 && (
-              <p className="text-sm text-gray-500">No arguments added.</p>
+              <p className="text-sm text-zinc-600">No arguments added.</p>
             )}
             <div className="space-y-2">
               {args.map((arg, i) => (
@@ -207,7 +200,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
                   <button
                     type="button"
                     onClick={() => removeArg(i)}
-                    className="text-gray-400 hover:text-red-400 transition-colors flex-shrink-0"
+                    className="text-zinc-600 hover:text-red-400 transition-colors flex-shrink-0"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -218,7 +211,6 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
             </div>
           </div>
 
-          {/* Environment Variables */}
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className={labelClass}>Environment Variables</label>
@@ -231,7 +223,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
               </button>
             </div>
             {env.length === 0 && (
-              <p className="text-sm text-gray-500">No environment variables added.</p>
+              <p className="text-sm text-zinc-600">No environment variables added.</p>
             )}
             <div className="space-y-2">
               {env.map((entry, i) => (
@@ -243,7 +235,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
                     placeholder="KEY"
                     className={`${inputClass} w-2/5`}
                   />
-                  <span className="text-gray-500">=</span>
+                  <span className="text-zinc-600">=</span>
                   <input
                     type="text"
                     value={entry.value}
@@ -254,7 +246,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
                   <button
                     type="button"
                     onClick={() => removeEnv(i)}
-                    className="text-gray-400 hover:text-red-400 transition-colors flex-shrink-0"
+                    className="text-zinc-600 hover:text-red-400 transition-colors flex-shrink-0"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -265,26 +257,24 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
             </div>
           </div>
 
-          {/* Save Error */}
           {saveError && (
-            <div className="bg-red-500/8 border border-red-500/20 rounded-xl p-3.5 text-sm text-red-300">
+            <div className="bg-red-500/8 border border-red-500/20 rounded-xl px-4 py-3 text-sm text-red-400">
               {saveError}
             </div>
           )}
 
-          {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-3">
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2.5 text-sm font-medium rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-all duration-200 border border-white/5 hover:border-white/10"
+              className="px-4 py-2 text-sm font-medium rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="btn-gradient px-5 py-2.5 text-sm font-medium rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? 'Saving…' : server ? 'Update Server' : 'Add Server'}
             </button>

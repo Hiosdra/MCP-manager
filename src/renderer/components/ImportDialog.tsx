@@ -149,34 +149,31 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
   const installedClients = clients.filter((c) => c.installed);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center modal-overlay" role="dialog" aria-label="Import servers">
-      <div className="modal-panel rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col m-4 animate-fade-in-up">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" role="dialog" aria-label="Import servers">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col m-4 shadow-2xl animate-fade-in">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
           <div>
-            <h2 className="text-lg font-semibold text-slate-100">Import Servers</h2>
-            <p className="text-sm text-slate-500 mt-0.5">
+            <h2 className="text-base font-medium text-zinc-100">Import Servers</h2>
+            <p className="text-[13px] text-zinc-500 mt-0.5">
               Pull existing MCP server configs from your AI clients
             </p>
           </div>
-          <button onClick={onClose} aria-label="Close dialog" className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-slate-200 transition-all duration-200">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button onClick={onClose} aria-label="Close dialog" className="w-7 h-7 rounded-md bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-zinc-400 hover:text-zinc-200 transition-colors">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
-          {/* Step 1: Scan */}
           {!scanResults && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium text-gray-300">Detected Clients</h3>
+                <h3 className="text-sm font-medium text-zinc-300">Detected Clients</h3>
                 <button
                   onClick={handleScanAll}
                   disabled={scanning || installedClients.length === 0}
-                  className="btn-gradient flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-lg text-white disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors disabled:opacity-50"
                 >
                   {scanning ? (
                     <>
@@ -191,29 +188,29 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
               </div>
 
               {clientsLoading ? (
-                <p className="text-gray-500 text-sm">Detecting clients…</p>
+                <p className="text-zinc-500 text-sm">Detecting clients…</p>
               ) : installedClients.length === 0 ? (
-                <p className="text-gray-500 text-sm">No AI clients detected on this system.</p>
+                <p className="text-zinc-500 text-sm">No AI clients detected on this system.</p>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {installedClients.map((client) => (
                     <div
                       key={client.clientType}
-                      className="integration-row flex items-center justify-between rounded-xl px-4 py-3"
+                      className="flex items-center justify-between rounded-xl px-4 py-3 bg-zinc-800/40 border border-zinc-800/50 hover:border-zinc-700/60 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center text-lg border border-white/5">
+                        <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-lg">
                           {client.icon || CLIENT_ICONS[client.clientType] || '🔧'}
                         </div>
                         <div>
-                          <span className="font-medium text-slate-200 text-sm">{client.displayName}</span>
-                          <p className="text-xs text-slate-500 truncate max-w-xs font-mono">{client.configPath}</p>
+                          <span className="font-medium text-zinc-200 text-sm">{client.displayName}</span>
+                          <p className="text-xs text-zinc-600 truncate max-w-xs font-mono">{client.configPath}</p>
                         </div>
                       </div>
                       <button
                         onClick={() => handleScanClient(client.clientType)}
                         disabled={scanning}
-                        className="text-xs font-medium px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-all duration-200 border border-white/5 hover:border-white/10 disabled:opacity-50"
+                        className="text-xs font-medium px-3 py-1.5 rounded-md text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors disabled:opacity-50"
                       >
                         Scan
                       </button>
@@ -224,10 +221,8 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
             </div>
           )}
 
-          {/* Step 2: Review & Select */}
           {scanResults && (
             <div>
-              {/* Errors */}
               {scanResults.filter((r) => r.error).length > 0 && (
                 <div className="mb-4 space-y-1">
                   {scanResults.filter((r) => r.error).map((r) => (
@@ -240,9 +235,8 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
 
               {discoveredServers.length === 0 ? (
                 <div className="text-center py-8">
-                  <div className="text-4xl mb-3">📭</div>
-                  <h3 className="text-gray-300 font-medium mb-1">No servers found</h3>
-                  <p className="text-gray-500 text-sm">Your AI clients don't have any MCP servers configured.</p>
+                  <p className="text-zinc-300 font-medium mb-1">No servers found</p>
+                  <p className="text-zinc-500 text-sm">Your AI clients don't have any MCP servers configured.</p>
                   <button
                     onClick={() => setScanResults(null)}
                     className="mt-4 text-sm text-blue-400 hover:text-blue-300"
@@ -256,16 +250,16 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => setScanResults(null)}
-                        className="text-gray-400 hover:text-white transition-colors"
+                        className="text-zinc-500 hover:text-zinc-200 transition-colors"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                         </svg>
                       </button>
-                      <h3 className="text-sm font-medium text-gray-300">
+                      <h3 className="text-sm font-medium text-zinc-300">
                         Found {discoveredServers.length} server{discoveredServers.length !== 1 ? 's' : ''}
                         {nonDuplicates.length < discoveredServers.length && (
-                          <span className="text-gray-500 font-normal ml-1">
+                          <span className="text-zinc-600 font-normal ml-1">
                             ({discoveredServers.length - nonDuplicates.length} already in library)
                           </span>
                         )}
@@ -281,7 +275,7 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
                     )}
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {discoveredServers.map((server) => {
                       const icon = CLIENT_ICONS[server.sourceClient] || '🔧';
                       const isSelected = selected.has(server.key);
@@ -292,19 +286,18 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
                           onClick={() => !server.isDuplicate && toggleSelect(server.key)}
                           className={`flex items-center gap-3 rounded-lg border px-4 py-3 transition-colors ${
                             server.isDuplicate
-                              ? 'bg-gray-800/50 border-gray-700/50 opacity-50 cursor-not-allowed'
+                              ? 'bg-zinc-900/50 border-zinc-800/50 opacity-40 cursor-not-allowed'
                               : isSelected
-                                ? 'bg-blue-600/10 border-blue-500/40 cursor-pointer'
-                                : 'bg-gray-800 border-gray-700 cursor-pointer hover:border-gray-600'
+                                ? 'bg-blue-600/8 border-blue-500/30 cursor-pointer'
+                                : 'bg-zinc-800/30 border-zinc-800 cursor-pointer hover:border-zinc-700'
                           }`}
                         >
-                          {/* Checkbox */}
                           <div className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
                             server.isDuplicate
-                              ? 'border-gray-600 bg-gray-700'
+                              ? 'border-zinc-700 bg-zinc-800'
                               : isSelected
                                 ? 'border-blue-500 bg-blue-600'
-                                : 'border-gray-600'
+                                : 'border-zinc-600'
                           }`}>
                             {isSelected && !server.isDuplicate && (
                               <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -313,27 +306,21 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
                             )}
                           </div>
 
-                          {/* Icon + Source */}
                           <span className="text-lg flex-shrink-0">{icon}</span>
 
-                          {/* Details */}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="font-medium text-white text-sm truncate">{server.name}</span>
+                              <span className="font-medium text-zinc-200 text-sm truncate">{server.name}</span>
                               {server.isDuplicate && (
-                                <span className="text-xs px-1.5 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400 flex-shrink-0">
+                                <span className="text-xs px-1.5 py-0.5 rounded bg-yellow-500/15 text-yellow-400 flex-shrink-0">
                                   Already exists
                                 </span>
                               )}
-                              <span className={`text-xs px-1.5 py-0.5 rounded-full flex-shrink-0 ${
-                                server.transportType === 'stdio'
-                                  ? 'bg-blue-500/20 text-blue-400'
-                                  : 'bg-purple-500/20 text-purple-400'
-                              }`}>
-                                {server.transportType.toUpperCase()}
+                              <span className="text-[11px] font-medium text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded uppercase flex-shrink-0">
+                                {server.transportType}
                               </span>
                             </div>
-                            <p className="text-xs text-gray-500 mt-0.5 truncate">
+                            <p className="text-xs text-zinc-600 mt-0.5 truncate">
                               {server.transportType === 'stdio'
                                 ? `${server.command} ${server.args.join(' ')}`
                                 : server.url}
@@ -349,23 +336,22 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
           )}
         </div>
 
-        {/* Footer */}
         {scanResults && discoveredServers.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
-            <span className="text-sm text-slate-400">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-zinc-800">
+            <span className="text-sm text-zinc-500">
               {selected.size} selected
             </span>
             <div className="flex items-center gap-3">
               <button
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-all duration-200 border border-white/5 hover:border-white/10"
+                className="px-4 py-2 text-sm font-medium rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleImport}
                 disabled={selected.size === 0 || importing}
-                className="btn-gradient px-4 py-2 text-sm font-medium rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {importing ? 'Importing…' : `Import ${selected.size} Server${selected.size !== 1 ? 's' : ''}`}
               </button>

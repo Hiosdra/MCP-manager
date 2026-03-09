@@ -81,22 +81,19 @@ export default function App() {
   const installedClientCount = clients.filter((c) => c.installed).length;
 
   return (
-    <div className="min-h-screen bg-[#0b1121] text-white flex flex-col">
-      {/* Navigation bar */}
-      <header className="glass-header flex items-center justify-between pl-20 pr-6 py-3 app-drag-region">
-        <div className="flex items-center gap-4 no-drag">
-          <h1 className="text-lg font-bold tracking-tight">
-            <span className="gradient-text">MCP</span> <span className="text-slate-200">Manager</span>
-          </h1>
-          <nav className="flex items-center gap-1 ml-4" aria-label="Main navigation">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
+      <header className="flex items-center justify-between pl-20 pr-5 h-12 border-b border-zinc-800/60 bg-zinc-950 app-drag-region">
+        <div className="flex items-center gap-6 no-drag">
+          <h1 className="text-sm font-semibold text-zinc-200 tracking-tight">MCP Manager</h1>
+          <nav className="flex items-center gap-0.5" aria-label="Main navigation">
             <button
               onClick={() => { setView('dashboard'); setSyncContext(null); }}
               aria-label="Servers"
               aria-current={view === 'dashboard' ? 'page' : undefined}
-              className={`px-3.5 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+              className={`px-3 py-1 text-[13px] font-medium rounded-md transition-colors ${
                 view === 'dashboard'
-                  ? 'nav-pill-active'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  ? 'bg-zinc-800 text-zinc-100'
+                  : 'text-zinc-500 hover:text-zinc-300'
               }`}
             >
               Servers
@@ -105,10 +102,10 @@ export default function App() {
               onClick={() => { setView('sync-hub'); setSyncContext(null); }}
               aria-label="Integrations"
               aria-current={view === 'sync-hub' && !syncContext ? 'page' : undefined}
-              className={`px-3.5 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+              className={`px-3 py-1 text-[13px] font-medium rounded-md transition-colors ${
                 view === 'sync-hub' && !syncContext
-                  ? 'nav-pill-active'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  ? 'bg-zinc-800 text-zinc-100'
+                  : 'text-zinc-500 hover:text-zinc-300'
               }`}
             >
               Integrations
@@ -116,13 +113,13 @@ export default function App() {
           </nav>
         </div>
         {view === 'dashboard' && (
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setShowImport(true)}
               aria-label="Import servers"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-all duration-200 border border-white/5 hover:border-white/10"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
             >
-              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               Import
@@ -130,9 +127,9 @@ export default function App() {
             <button
               onClick={handleAddServer}
               aria-label="Add server"
-              className="btn-gradient flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-lg text-white"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               Add Server
@@ -141,15 +138,13 @@ export default function App() {
         )}
       </header>
 
-      {/* Error banner */}
       {error && (
-        <div className="mx-6 mt-4 bg-red-500/8 border border-red-500/20 rounded-xl p-3.5 text-sm text-red-300 backdrop-blur-sm">
+        <div className="mx-6 mt-4 bg-red-500/8 border border-red-500/20 rounded-xl px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       )}
 
-      {/* Main content */}
-      <main className="flex-1 overflow-y-auto bg-gradient-to-b from-[#0b1121] to-[#0f1729]">
+      <main className="flex-1 overflow-y-auto">
         {view === 'dashboard' && (
           <Dashboard
             servers={servers}
@@ -160,7 +155,6 @@ export default function App() {
             onManageSync={handleManageSync}
           />
         )}
-
         {view === 'sync-hub' && (
           <SyncHub
             serverId={syncContext?.serverId}
@@ -170,14 +164,12 @@ export default function App() {
         )}
       </main>
 
-      {/* Status bar */}
       <StatusBar
         serverCount={servers.length}
         clientCount={installedClientCount}
         lastSyncTime={lastSyncTime}
       />
 
-      {/* Server form modal */}
       {showForm && (
         <ServerForm
           server={editingServer ?? undefined}
@@ -186,7 +178,6 @@ export default function App() {
         />
       )}
 
-      {/* Import dialog */}
       {showImport && (
         <ImportDialog
           existingServerNames={servers.map((s) => s.name)}

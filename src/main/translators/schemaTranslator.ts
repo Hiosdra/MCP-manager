@@ -142,6 +142,7 @@ export function translateForClient(server: McpServer, clientType: ClientType): T
     case ClientType.Cursor:
     case ClientType.Windsurf:
     case ClientType.VSCodeCline:
+    case ClientType.CopilotCli:
       return {
         sectionKey: 'mcpServers',
         serverName: server.name,

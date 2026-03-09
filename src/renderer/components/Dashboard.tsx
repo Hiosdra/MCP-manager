@@ -48,80 +48,69 @@ export default function Dashboard({ servers, loading, onEdit, onDelete, onManage
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Server Library</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+    <div className="p-3">
+      <h1 className="text-base font-bold mb-2">Server Library</h1>
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
         {servers.map((server) => {
           const envCount = Object.keys(server.env).length;
+          const cmdText = server.transportType === 'stdio'
+            ? `${server.command} ${server.args.join(' ')}`
+            : server.url || '';
           return (
             <div
               key={server.id}
-              className="bg-gray-800 rounded-lg border border-gray-700 p-4 hover:border-gray-600 transition-colors group flex flex-col"
+              className="bg-gray-800 rounded border border-gray-700 px-2.5 py-2 hover:border-gray-600 transition-colors group flex flex-col"
             >
               {/* Header */}
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-semibold text-white truncate">{server.name}</h3>
-                  <span
-                    className={`inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full ${
-                      server.transportType === 'stdio'
-                        ? 'bg-blue-500/20 text-blue-400'
-                        : 'bg-purple-500/20 text-purple-400'
-                    }`}
-                  >
-                    {server.transportType.toUpperCase()}
-                  </span>
-                </div>
+              <div className="flex items-center gap-1.5 mb-1">
+                <h3 className="text-xs font-semibold text-white truncate">{server.name}</h3>
+                <span
+                  className={`shrink-0 px-1.5 py-px text-[10px] font-medium rounded-full leading-tight ${
+                    server.transportType === 'stdio'
+                      ? 'bg-blue-500/20 text-blue-400'
+                      : 'bg-purple-500/20 text-purple-400'
+                  }`}
+                >
+                  {server.transportType.toUpperCase()}
+                </span>
               </div>
 
               {/* Details */}
-              <div className="space-y-1.5 mb-3">
-                {server.transportType === 'stdio' ? (
-                  <div className="text-sm text-gray-400">
-                    <span className="text-gray-500">Command:</span>{' '}
-                    <code className="text-gray-300 bg-gray-700/50 px-1.5 py-0.5 rounded text-xs break-all">
-                      {server.command} {server.args.join(' ')}
-                    </code>
-                  </div>
-                ) : (
-                  <div className="text-sm text-gray-400">
-                    <span className="text-gray-500">URL:</span>{' '}
-                    <code className="text-gray-300 bg-gray-700/50 px-1.5 py-0.5 rounded text-xs break-all">
-                      {server.url}
-                    </code>
-                  </div>
-                )}
+              <div className="mb-1.5 min-h-[1.25rem]">
+                <code className="text-[10px] text-gray-400 bg-gray-700/50 px-1 py-px rounded break-all line-clamp-2">
+                  {cmdText}
+                </code>
                 {envCount > 0 && (
-                  <div className="text-sm text-gray-500">
-                    {envCount} env variable{envCount !== 1 ? 's' : ''}
+                  <div className="text-[10px] text-gray-500 mt-0.5">
+                    {envCount} env var{envCount !== 1 ? 's' : ''}
                   </div>
                 )}
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pt-2 border-t border-gray-700 mt-auto">
+              <div className="flex items-center gap-1 pt-1.5 border-t border-gray-700/50 mt-auto">
                 <button
                   onClick={() => onManageSync(server.id)}
-                  className="flex-1 text-sm px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+                  className="flex-1 text-[11px] px-2 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white transition-colors"
                 >
                   Sync
                 </button>
                 <button
                   onClick={() => onEdit(server)}
-                  className="text-sm px-3 py-1.5 rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
+                  className="text-[11px] px-2 py-1 rounded bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(server.id)}
                   onBlur={() => setConfirmDeleteId(null)}
-                  className={`text-sm px-3 py-1.5 rounded-md transition-colors ${
+                  className={`text-[11px] px-2 py-1 rounded transition-colors ${
                     confirmDeleteId === server.id
                       ? 'bg-red-600 hover:bg-red-500 text-white'
                       : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
                   }`}
                 >
-                  {confirmDeleteId === server.id ? 'Confirm' : 'Delete'}
+                  {confirmDeleteId === server.id ? '?' : 'Del'}
                 </button>
               </div>
             </div>

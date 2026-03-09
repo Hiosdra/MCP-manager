@@ -13,6 +13,7 @@ export enum ClientType {
   Goose = 'goose',
   VSCodeCline = 'vscode-cline',
   JetBrains = 'jetbrains',
+  CopilotCli = 'copilot-cli',
 }
 
 // A generic MCP server definition (the "single source of truth" format)

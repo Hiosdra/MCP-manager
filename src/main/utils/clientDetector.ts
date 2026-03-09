@@ -26,6 +26,7 @@ const CLIENT_INFO: Record<ClientType, { displayName: string; icon: string }> = {
   [ClientType.Goose]: { displayName: 'Goose (Block)', icon: '🪿' },
   [ClientType.VSCodeCline]: { displayName: 'VS Code (Cline/Roo)', icon: '🔵' },
   [ClientType.JetBrains]: { displayName: 'JetBrains IDE', icon: '🧠' },
+  [ClientType.CopilotCli]: { displayName: 'Copilot CLI', icon: '🐙' },
 };
 
 /**
@@ -125,6 +126,11 @@ function getConfigPath(clientType: ClientType): string | null {
           'cline_mcp_settings.json',
         );
       return null;
+
+    case ClientType.CopilotCli:
+      if (PLATFORM === 'win32')
+        return path.join(getAppData(), 'github-copilot', 'mcp.json');
+      return path.join(HOME, '.config', 'github-copilot', 'mcp.json');
 
     default:
       return null;

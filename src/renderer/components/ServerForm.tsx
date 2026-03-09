@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { McpServer, McpServerInput, TransportType } from '../../shared/types';
 
 interface ServerFormProps {
@@ -25,6 +25,15 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
   const [errors, setErrors] = useState<FormErrors>({});
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCancel();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onCancel]);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -94,7 +103,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
   const errorClass = 'text-red-400 text-xs mt-1';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" role="dialog" aria-label={server ? 'Edit server' : 'Add server'}>
       <div className="bg-gray-800 rounded-xl border border-gray-700 shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto m-4">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
@@ -103,6 +112,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
           </h2>
           <button
             onClick={onCancel}
+            aria-label="Close dialog"
             className="text-gray-400 hover:text-white transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

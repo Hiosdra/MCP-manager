@@ -88,9 +88,11 @@ export default function App() {
           <h1 className="text-lg font-bold tracking-tight">
             <span className="text-blue-400">MCP</span> Manager
           </h1>
-          <nav className="flex items-center gap-1 ml-4">
+          <nav className="flex items-center gap-1 ml-4" aria-label="Main navigation">
             <button
               onClick={() => { setView('dashboard'); setSyncContext(null); }}
+              aria-label="Servers"
+              aria-current={view === 'dashboard' ? 'page' : undefined}
               className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
                 view === 'dashboard'
                   ? 'bg-gray-700 text-white'
@@ -101,6 +103,8 @@ export default function App() {
             </button>
             <button
               onClick={() => { setView('sync-hub'); setSyncContext(null); }}
+              aria-label="Integrations"
+              aria-current={view === 'sync-hub' && !syncContext ? 'page' : undefined}
               className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
                 view === 'sync-hub' && !syncContext
                   ? 'bg-gray-700 text-white'
@@ -115,6 +119,7 @@ export default function App() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowImport(true)}
+              aria-label="Import servers"
               className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,6 +129,7 @@ export default function App() {
             </button>
             <button
               onClick={handleAddServer}
+              aria-label="Add server"
               className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,6 +154,7 @@ export default function App() {
           <Dashboard
             servers={servers}
             loading={loading}
+            onAdd={handleAddServer}
             onEdit={handleEditServer}
             onDelete={handleDeleteServer}
             onManageSync={handleManageSync}

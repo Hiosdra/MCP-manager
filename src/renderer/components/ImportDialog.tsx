@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { DetectedClient, McpServerInput, ClientType, ImportResult } from '../../shared/types';
 import { useDetectedClients } from '../hooks/useApi';
 
@@ -27,6 +27,15 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
   const [scanResults, setScanResults] = useState<ImportResult[] | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [importing, setImporting] = useState(false);
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   // All discovered servers flattened with source info
   type DiscoveredServer = McpServerInput & { sourceClient: ClientType; key: string; isDuplicate: boolean };
@@ -140,7 +149,7 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
   const installedClients = clients.filter((c) => c.installed);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" role="dialog" aria-label="Import servers">
       <div className="bg-gray-800 rounded-xl border border-gray-700 shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col m-4">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
@@ -150,7 +159,7 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
               Pull existing MCP server configs from your AI clients
             </p>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
+          <button onClick={onClose} aria-label="Close dialog" className="text-gray-400 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>

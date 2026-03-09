@@ -48,20 +48,20 @@ export default function Dashboard({ servers, loading, onEdit, onDelete, onManage
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Server Library</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="p-4">
+      <h1 className="text-xl font-bold mb-4">Server Library</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {servers.map((server) => {
           const envCount = Object.keys(server.env).length;
           return (
             <div
               key={server.id}
-              className="bg-gray-800 rounded-lg border border-gray-700 p-5 hover:border-gray-600 transition-colors group flex flex-col"
+              className="bg-gray-800 rounded-lg border border-gray-700 p-4 hover:border-gray-600 transition-colors group flex flex-col"
             >
               {/* Header */}
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between mb-2">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-semibold text-white truncate">{server.name}</h3>
+                  <h3 className="text-base font-semibold text-white truncate">{server.name}</h3>
                   <span
                     className={`inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full ${
                       server.transportType === 'stdio'
@@ -75,7 +75,7 @@ export default function Dashboard({ servers, loading, onEdit, onDelete, onManage
               </div>
 
               {/* Details */}
-              <div className="space-y-2 mb-4">
+              <div className="space-y-1.5 mb-3">
                 {server.transportType === 'stdio' ? (
                   <div className="text-sm text-gray-400">
                     <span className="text-gray-500">Command:</span>{' '}
@@ -99,7 +99,7 @@ export default function Dashboard({ servers, loading, onEdit, onDelete, onManage
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pt-3 border-t border-gray-700 mt-auto">
+              <div className="flex items-center gap-2 pt-2 border-t border-gray-700 mt-auto">
                 <button
                   onClick={() => onManageSync(server.id)}
                   className="flex-1 text-sm px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors"

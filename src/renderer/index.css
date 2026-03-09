@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.app-drag-region {
+  -webkit-app-region: drag;
+}
+
+.app-drag-region .no-drag,
+.app-drag-region button,
+.app-drag-region a,
+.app-drag-region input {
+  -webkit-app-region: no-drag;
+}

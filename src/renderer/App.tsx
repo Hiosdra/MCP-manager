@@ -83,8 +83,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       {/* Navigation bar */}
-      <header className="flex items-center justify-between px-6 py-3 bg-gray-800 border-b border-gray-700">
-        <div className="flex items-center gap-4">
+      <header className="flex items-center justify-between pl-20 pr-6 py-3 bg-gray-800 border-b border-gray-700 app-drag-region">
+        <div className="flex items-center gap-4 no-drag">
           <h1 className="text-lg font-bold tracking-tight">
             <span className="text-blue-400">MCP</span> Manager
           </h1>

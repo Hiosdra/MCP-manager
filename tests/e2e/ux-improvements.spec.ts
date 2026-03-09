@@ -11,8 +11,8 @@ test.describe('Dashboard UX', () => {
     }
 
     // Transport badges should be readable
-    await expect(page.getByText('STDIO').first()).toBeVisible();
-    await expect(page.getByText('SSE', { exact: true })).toBeVisible();
+    await expect(page.getByText('stdio').first()).toBeVisible();
+    await expect(page.getByText('sse', { exact: true })).toBeVisible();
 
     // Action buttons should use full words (not abbreviations)
     const deleteButtons = page.getByRole('button', { name: /^Delete / });
@@ -94,7 +94,7 @@ test.describe('Empty State', () => {
     await page.goto('/');
 
     await expect(page.getByText('No servers yet')).toBeVisible();
-    await expect(page.getByText('Add your first MCP server to get started.')).toBeVisible();
+    await expect(page.getByText('Add your first MCP server to start managing')).toBeVisible();
 
     // CTA button should exist
     const ctaButton = page.getByRole('button', { name: 'Add your first server' });

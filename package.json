@@ -1,8 +1,20 @@
 {
-  "name": "mcp-manager",
+  "name": "@hiosdra/mcp-manager",
   "version": "0.1.0",
   "description": "MCP Manager - Centralized MCP server configuration tool",
   "main": "dist/main/main.js",
+  "bin": {
+    "mcp-manager": "bin/mcp-manager.js"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "index.html",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "npm run rebuild:electron && npm run build:main && concurrently \"vite\" \"vite build --config vite.main.config.ts --watch\" \"sleep 2 && electron .\"",
     "dev:docs": "vite --config docs/vite.config.ts",
@@ -17,11 +29,13 @@
     "test": "npm run rebuild:node && vitest run",
     "test:e2e": "playwright test",
     "preview:docs": "vite preview --config docs/vite.config.ts",
-    "test:watch": "npm run rebuild:node && vitest"
+    "test:watch": "npm run rebuild:node && vitest",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.1",
     "better-sqlite3": "^12.6.2",
+    "electron": "^40.8.0",
     "jsonc-parser": "^3.3.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -38,7 +52,6 @@
     "@vitejs/plugin-react": "^5.1.4",
     "autoprefixer": "^10.4.27",
     "concurrently": "^9.2.1",
-    "electron": "^40.8.0",
     "electron-builder": "^26.8.1",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.1",

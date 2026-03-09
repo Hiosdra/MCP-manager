@@ -69,12 +69,29 @@ Every AI client (Claude Desktop, Cursor, Zed, Continue.dev, etc.) maintains its 
 
 ## Getting Started
 
-### Prerequisites
+### Quick Start (npx)
+
+Run MCP Manager directly without cloning — requires Node.js ≥ 18:
+
+```bash
+npx @hiosdra/mcp-manager
+```
+
+Or install globally:
+
+```bash
+npm install -g @hiosdra/mcp-manager
+mcp-manager
+```
+
+### Development
+
+#### Prerequisites
 
 - Node.js ≥ 18
 - npm
 
-### Install & Run
+#### Install & Run
 
 ```bash
 npm install
@@ -148,3 +165,25 @@ tests/
 ├── syncEngine.test.ts       # 13 tests — end-to-end sync + backup
 └── clientDetector.test.ts   # 2 tests — Gemini CLI and Junie path detection
 ```
+
+## Publishing to npm
+
+The package is published automatically via GitHub Actions when you create a new [GitHub Release](https://github.com/Hiosdra/MCP-manager/releases/new).
+
+### One-time setup
+
+1. **Create an npm account** at [npmjs.com](https://www.npmjs.com/) if you don't have one.
+2. **Create an npm access token** — go to npmjs.com → Account → Access Tokens → Generate New Token (type: **Automation**).
+3. **Add the token as a GitHub secret** — go to the repo Settings → Secrets and variables → Actions → New repository secret, name it `NPM_TOKEN`, paste the token.
+
+### Releasing a new version
+
+```bash
+# Bump version (patch / minor / major)
+npm version patch   # e.g. 0.1.0 → 0.1.1
+
+# Push the version commit and tag
+git push && git push --tags
+```
+
+Then create a GitHub Release from the tag — the workflow will build, test, and publish to npm automatically.

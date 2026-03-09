@@ -4,11 +4,12 @@ import { useServers, useDetectedClients } from './hooks/useApi';
 import Dashboard from './components/Dashboard';
 import ServerForm from './components/ServerForm';
 import SyncHub from './components/SyncHub';
+import BackupList from './components/BackupList';
 import StatusBar from './components/StatusBar';
 import ImportDialog from './components/ImportDialog';
 import Onboarding, { useOnboarding } from './components/Onboarding';
 
-type View = 'dashboard' | 'sync-hub';
+type View = 'dashboard' | 'sync-hub' | 'backups';
 
 interface SyncContext {
   serverId: string;
@@ -87,17 +88,6 @@ export default function App() {
       <header className="flex items-center justify-between pl-20 pr-5 h-12 border-b border-zinc-800/60 bg-zinc-950 app-drag-region">
         <div className="flex items-center gap-6 no-drag">
           <h1 className="text-sm font-semibold text-zinc-200 tracking-tight">MCP Manager</h1>
-          <button
-            onClick={reshowOnboarding}
-            aria-label="Help"
-            title="Quick-start guide"
-            className="w-7 h-7 flex items-center justify-center rounded-md text-zinc-600 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01" />
-              <circle cx="12" cy="12" r="10" strokeWidth={2} />
-            </svg>
-          </button>
           <nav className="flex items-center gap-0.5" aria-label="Main navigation">
             <button
               onClick={() => { setView('dashboard'); setSyncContext(null); }}
@@ -123,32 +113,57 @@ export default function App() {
             >
               Integrations
             </button>
+            <button
+              onClick={() => { setView('backups'); setSyncContext(null); }}
+              aria-label="Backups"
+              aria-current={view === 'backups' ? 'page' : undefined}
+              className={`px-3 py-1 text-[13px] font-medium rounded-md transition-colors ${
+                view === 'backups'
+                  ? 'bg-zinc-800 text-zinc-100'
+                  : 'text-zinc-500 hover:text-zinc-300'
+              }`}
+            >
+              Backups
+            </button>
           </nav>
         </div>
-        {view === 'dashboard' && (
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowImport(true)}
-              aria-label="Import servers"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Import
-            </button>
-            <button
-              onClick={handleAddServer}
-              aria-label="Add server"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Add Server
-            </button>
-          </div>
-        )}
+        <div className="flex items-center gap-2 no-drag">
+          {view === 'dashboard' && (
+            <>
+              <button
+                onClick={() => setShowImport(true)}
+                aria-label="Import servers"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Import
+              </button>
+              <button
+                onClick={handleAddServer}
+                aria-label="Add server"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Add Server
+              </button>
+            </>
+          )}
+          <button
+            onClick={reshowOnboarding}
+            aria-label="Quick-start guide"
+            title="Quick-start guide"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01" />
+              <circle cx="12" cy="12" r="10" strokeWidth={2} />
+            </svg>
+          </button>
+        </div>
       </header>
 
       {error && (
@@ -175,6 +190,7 @@ export default function App() {
             onBack={syncContext ? handleBackFromSync : undefined}
           />
         )}
+        {view === 'backups' && <BackupList />}
       </main>
 
       <StatusBar

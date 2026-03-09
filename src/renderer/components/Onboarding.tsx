@@ -3,16 +3,16 @@ import { useState, useEffect } from 'react';
 const ONBOARDING_KEY = 'mcp-manager-onboarding-seen';
 
 export function useOnboarding() {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (!localStorage.getItem(ONBOARDING_KEY)) {
-      setShow(true);
+  const [show, setShow] = useState(() => {
+    try {
+      return !localStorage.getItem(ONBOARDING_KEY);
+    } catch {
+      return true;
     }
-  }, []);
+  });
 
   const dismiss = () => {
-    localStorage.setItem(ONBOARDING_KEY, '1');
+    try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch { /* noop */ }
     setShow(false);
   };
 

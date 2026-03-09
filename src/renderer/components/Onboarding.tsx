@@ -16,7 +16,9 @@ export function useOnboarding() {
     setShow(false);
   };
 
-  return { showOnboarding: show, dismissOnboarding: dismiss };
+  const reshow = () => setShow(true);
+
+  return { showOnboarding: show, dismissOnboarding: dismiss, reshowOnboarding: reshow };
 }
 
 const tips = [

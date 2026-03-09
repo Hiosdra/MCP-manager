@@ -24,7 +24,7 @@ export default function App() {
   const [syncContext, setSyncContext] = useState<SyncContext | null>(null);
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
   const [showImport, setShowImport] = useState(false);
-  const { showOnboarding, dismissOnboarding } = useOnboarding();
+  const { showOnboarding, dismissOnboarding, reshowOnboarding } = useOnboarding();
 
   const handleAddServer = () => {
     setEditingServer(null);
@@ -87,6 +87,17 @@ export default function App() {
       <header className="flex items-center justify-between pl-20 pr-5 h-12 border-b border-zinc-800/60 bg-zinc-950 app-drag-region">
         <div className="flex items-center gap-6 no-drag">
           <h1 className="text-sm font-semibold text-zinc-200 tracking-tight">MCP Manager</h1>
+          <button
+            onClick={reshowOnboarding}
+            aria-label="Help"
+            title="Quick-start guide"
+            className="w-7 h-7 flex items-center justify-center rounded-md text-zinc-600 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01" />
+              <circle cx="12" cy="12" r="10" strokeWidth={2} />
+            </svg>
+          </button>
           <nav className="flex items-center gap-0.5" aria-label="Main navigation">
             <button
               onClick={() => { setView('dashboard'); setSyncContext(null); }}

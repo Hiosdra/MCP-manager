@@ -14,6 +14,8 @@ export enum ClientType {
   VSCodeCline = 'vscode-cline',
   JetBrains = 'jetbrains',
   CopilotCli = 'copilot-cli',
+  GeminiCli = 'gemini-cli',
+  Junie = 'junie',
 }
 
 // A generic MCP server definition (the "single source of truth" format)

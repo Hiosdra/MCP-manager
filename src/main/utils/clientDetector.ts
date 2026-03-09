@@ -27,6 +27,8 @@ const CLIENT_INFO: Record<ClientType, { displayName: string; icon: string }> = {
   [ClientType.VSCodeCline]: { displayName: 'VS Code (Cline/Roo)', icon: '🔵' },
   [ClientType.JetBrains]: { displayName: 'JetBrains IDE', icon: '🧠' },
   [ClientType.CopilotCli]: { displayName: 'Copilot CLI', icon: '🐙' },
+  [ClientType.GeminiCli]: { displayName: 'Gemini CLI', icon: '💎' },
+  [ClientType.Junie]: { displayName: 'Junie', icon: '🐾' },
 };
 
 /**
@@ -131,6 +133,16 @@ function getConfigPath(clientType: ClientType): string | null {
       if (PLATFORM === 'win32')
         return path.join(getAppData(), 'github-copilot', 'mcp.json');
       return path.join(HOME, '.config', 'github-copilot', 'mcp.json');
+
+    case ClientType.GeminiCli:
+      if (PLATFORM === 'win32')
+        return path.join(getUserProfile(), '.gemini', 'settings.json');
+      return path.join(HOME, '.gemini', 'settings.json');
+
+    case ClientType.Junie:
+      if (PLATFORM === 'win32')
+        return path.join(getUserProfile(), '.junie', 'mcp', 'mcp.json');
+      return path.join(HOME, '.junie', 'mcp', 'mcp.json');
 
     default:
       return null;

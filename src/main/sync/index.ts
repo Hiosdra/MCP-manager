@@ -2,6 +2,7 @@ export {
   syncServerToClient,
   unsyncServerFromClient,
   syncServerToAllTargets,
+  restoreFromBackup,
 } from './syncEngine.js';
 
 export {

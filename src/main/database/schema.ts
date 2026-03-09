@@ -46,6 +46,15 @@ export function initDatabase(dbPath?: string): Database.Database {
       PRIMARY KEY (server_id, client_type),
       FOREIGN KEY (server_id) REFERENCES servers(id) ON DELETE CASCADE
     );
+
+    CREATE TABLE IF NOT EXISTS config_backups (
+      id TEXT PRIMARY KEY,
+      client_type TEXT NOT NULL,
+      config_path TEXT NOT NULL,
+      backup_path TEXT NOT NULL,
+      size_bytes INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 
   return db;

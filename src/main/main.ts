@@ -1,14 +1,17 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
+import { unlink } from 'fs/promises';
 import { initDatabase } from './database/schema.js';
 import { ServerRepository } from './database/serverRepository.js';
+import { BackupRepository } from './database/backupRepository.js';
 import { detectClients, getClientConfigPath } from './utils/clientDetector.js';
-import { syncServerToClient, syncServerToAllTargets } from './sync/syncEngine.js';
+import { syncServerToClient, syncServerToAllTargets, restoreFromBackup } from './sync/syncEngine.js';
 import { importServersFromClient, importServersFromAllClients } from './sync/importEngine.js';
-import { McpServerInput, ClientType } from '../shared/types.js';
+import { McpServerInput, ClientType, SyncResult } from '../shared/types.js';
 
 let mainWindow: BrowserWindow | null = null;
 let repo: ServerRepository;
+let backupRepo: BackupRepository;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -39,6 +42,17 @@ function createWindow() {
 }
 
 function registerIpcHandlers() {
+  /** Record backup entries in the database after sync */
+  function recordBackups(results: SyncResult[]) {
+    for (const r of results) {
+      if (r.backedUp && r.backupPath && r.configPath) {
+        backupRepo.create(r.clientType, r.configPath, r.backupPath, r.backupSizeBytes ?? 0);
+      }
+    }
+    // Auto-prune: keep the 20 most recent per client
+    backupRepo.pruneOld(20);
+  }
+
   // --- Server CRUD ---
   ipcMain.handle('get-servers', async () => {
     return repo.getAll();
@@ -82,7 +96,9 @@ function registerIpcHandlers() {
     if (targets.length === 0) return [];
 
     const clientTypes = targets.map((t) => t.clientType);
-    return syncServerToAllTargets(server, clientTypes);
+    const results = await syncServerToAllTargets(server, clientTypes);
+    recordBackups(results);
+    return results;
   });
 
   ipcMain.handle('sync-all', async () => {
@@ -99,12 +115,13 @@ function registerIpcHandlers() {
       );
     }
 
-    const allResults = [];
+    const allResults: SyncResult[] = [];
     for (const promises of resultsByServer.values()) {
       const results = await Promise.all(promises);
       allResults.push(...results);
     }
 
+    recordBackups(allResults);
     return allResults;
   });
 
@@ -116,11 +133,34 @@ function registerIpcHandlers() {
   ipcMain.handle('import-from-all-clients', async () => {
     return importServersFromAllClients();
   });
+
+  // --- Backup operations ---
+  ipcMain.handle('get-backups', async () => {
+    return backupRepo.getAll();
+  });
+
+  ipcMain.handle('restore-backup', async (_event, backupId: string) => {
+    const backup = backupRepo.getById(backupId);
+    if (!backup) throw new Error(`Backup '${backupId}' not found`);
+    await restoreFromBackup(backup.backupPath, backup.configPath);
+  });
+
+  ipcMain.handle('delete-backup', async (_event, backupId: string) => {
+    const backup = backupRepo.getById(backupId);
+    if (!backup) throw new Error(`Backup '${backupId}' not found`);
+    try {
+      await unlink(backup.backupPath);
+    } catch {
+      // File already gone — that's fine
+    }
+    backupRepo.delete(backupId);
+  });
 }
 
 app.whenReady().then(() => {
   const db = initDatabase();
   repo = new ServerRepository(db);
+  backupRepo = new BackupRepository(db);
 
   registerIpcHandlers();
   createWindow();

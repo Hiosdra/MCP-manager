@@ -1,4 +1,6 @@
-import { copyFile, access } from 'fs/promises';
+import { copyFile, access, stat, mkdir } from 'fs/promises';
+import path from 'path';
+import { app } from 'electron';
 import { McpServer, McpServerInput, ClientType, SyncResult } from '../../shared/types.js';
 import { translateForClient, TranslatedConfig } from '../translators/schemaTranslator.js';
 import { getClientConfigPath } from '../utils/clientDetector.js';
@@ -31,14 +33,33 @@ async function fileExists(filePath: string): Promise<boolean> {
   }
 }
 
-/** Create a backup of the config file before mutating it */
-async function backupFile(filePath: string): Promise<boolean> {
-  if (await fileExists(filePath)) {
-    const backupPath = filePath + '.backup';
-    await copyFile(filePath, backupPath);
-    return true;
+/** Get the directory for storing timestamped backups */
+function getBackupDir(): string {
+  try {
+    return path.join(app.getPath('userData'), 'backups');
+  } catch {
+    return path.join(process.cwd(), 'backups');
   }
-  return false;
+}
+
+/** Create a timestamped backup of the config file and return [backedUp, backupPath, sizeBytes] */
+async function backupFile(filePath: string, clientType: ClientType): Promise<{ backedUp: boolean; backupPath?: string; sizeBytes?: number }> {
+  if (!(await fileExists(filePath))) {
+    return { backedUp: false };
+  }
+
+  const backupDir = getBackupDir();
+  await mkdir(backupDir, { recursive: true });
+
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const baseName = path.basename(filePath);
+  const backupFileName = `${clientType}_${baseName}_${timestamp}.backup`;
+  const backupPath = path.join(backupDir, backupFileName);
+
+  await copyFile(filePath, backupPath);
+  const info = await stat(backupPath);
+
+  return { backedUp: true, backupPath, sizeBytes: info.size };
 }
 
 /** Write a translated config to the target client's config file */
@@ -157,8 +178,8 @@ export async function syncServerToClient(
   try {
     const translated = translateForClient(server, clientType);
 
-    const backedUp = await withRetry(
-      () => backupFile(configPath),
+    const backupResult = await withRetry(
+      () => backupFile(configPath, clientType),
       `backup ${clientType}`
     );
 
@@ -170,7 +191,9 @@ export async function syncServerToClient(
     return {
       clientType,
       success: true,
-      backedUp,
+      backedUp: backupResult.backedUp,
+      backupPath: backupResult.backupPath,
+      backupSizeBytes: backupResult.sizeBytes,
       configPath,
     };
   } catch (err: any) {
@@ -227,4 +250,17 @@ export async function syncServerToAllTargets(
       ? r.value
       : { clientType: ClientType.ClaudeDesktop, success: false, error: String(r.reason) }
   );
+}
+
+/** Restore a config file from a backup */
+export async function restoreFromBackup(backupPath: string, configPath: string): Promise<void> {
+  if (!(await fileExists(backupPath))) {
+    throw new Error(`Backup file not found: ${backupPath}`);
+  }
+  // Create a safety backup of the current file before restoring
+  if (await fileExists(configPath)) {
+    const safetyPath = configPath + '.pre-restore';
+    await copyFile(configPath, safetyPath);
+  }
+  await copyFile(backupPath, configPath);
 }

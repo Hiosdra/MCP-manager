@@ -54,6 +54,8 @@ export interface SyncResult {
   success: boolean;
   error?: string;
   backedUp?: boolean;
+  backupPath?: string;
+  backupSizeBytes?: number;
   configPath?: string;
 }
 
@@ -64,6 +66,16 @@ export interface DetectedClient {
   configPath: string;
   installed: boolean;
   icon?: string; // emoji or icon identifier
+}
+
+// A tracked config backup
+export interface ConfigBackup {
+  id: string;
+  clientType: ClientType;
+  configPath: string;
+  backupPath: string;
+  sizeBytes: number;
+  createdAt: string;
 }
 
 // Result of importing servers from a client
@@ -86,6 +98,9 @@ export interface ElectronAPI {
   syncAll: () => Promise<SyncResult[]>;
   importFromClient: (clientType: ClientType) => Promise<ImportResult>;
   importFromAllClients: () => Promise<ImportResult[]>;
+  getBackups: () => Promise<ConfigBackup[]>;
+  restoreBackup: (backupId: string) => Promise<void>;
+  deleteBackup: (backupId: string) => Promise<void>;
 }
 
 // Augment Window interface for preload bridge

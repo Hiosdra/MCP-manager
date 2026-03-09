@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { writeFile, readFile, mkdir, rm, access } from 'fs/promises';
+import { writeFile, readFile, mkdir, rm, access, readdir } from 'fs/promises';
 import path from 'path';
 import os from 'os';
 import { McpServer, ClientType } from '../src/shared/types';
@@ -39,6 +39,13 @@ afterEach(async () => {
 vi.mock('../src/main/utils/clientDetector', () => ({
   detectClients: vi.fn().mockResolvedValue([]),
   getClientConfigPath: vi.fn(),
+}));
+
+// Mock Electron's app module so backupFile() can resolve the backup directory
+vi.mock('electron', () => ({
+  app: {
+    getPath: vi.fn().mockReturnValue(os.tmpdir()),
+  },
 }));
 
 import { getClientConfigPath } from '../src/main/utils/clientDetector';
@@ -181,7 +188,7 @@ describe('Sync Engine', () => {
   });
 
   describe('Backup behavior', () => {
-    it('creates .backup file before mutation', async () => {
+    it('creates timestamped backup file before mutation', async () => {
       const configPath = path.join(tmpDir, 'config.json');
       await writeFile(configPath, '{"existing": true}');
       mockedGetPath.mockReturnValue(configPath);
@@ -190,8 +197,9 @@ describe('Sync Engine', () => {
 
       expect(result.success).toBe(true);
       expect(result.backedUp).toBe(true);
+      expect(result.backupPath).toBeDefined();
 
-      const backup = await readFile(configPath + '.backup', 'utf-8');
+      const backup = await readFile(result.backupPath!, 'utf-8');
       expect(JSON.parse(backup)).toEqual({ existing: true });
     });
 

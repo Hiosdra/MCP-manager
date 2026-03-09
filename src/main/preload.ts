@@ -14,6 +14,9 @@ const api: ElectronAPI = {
   syncAll: () => ipcRenderer.invoke('sync-all'),
   importFromClient: (clientType) => ipcRenderer.invoke('import-from-client', clientType),
   importFromAllClients: () => ipcRenderer.invoke('import-from-all-clients'),
+  getBackups: () => ipcRenderer.invoke('get-backups'),
+  restoreBackup: (backupId) => ipcRenderer.invoke('restore-backup', backupId),
+  deleteBackup: (backupId) => ipcRenderer.invoke('delete-backup', backupId),
 };
 
 contextBridge.exposeInMainWorld('api', api);

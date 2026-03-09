@@ -179,7 +179,7 @@ export default function SyncHub({ serverId, serverName, onBack }: SyncHubProps) 
         </div>
       ) : (
         <div className="space-y-2">
-          {clients.map((client) => {
+          {[...clients].sort((a, b) => Number(b.installed) - Number(a.installed)).map((client) => {
             const isEnabled = syncTargets.get(client.clientType) ?? false;
             const result = getResultForClient(client.clientType);
             const icon = client.icon || CLIENT_ICONS[client.clientType] || '🔧';

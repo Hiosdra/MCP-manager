@@ -145,6 +145,9 @@ async function readClientConfig(clientType: ClientType, configPath: string): Pro
     case ClientType.Cursor:
     case ClientType.Windsurf:
     case ClientType.VSCodeCline:
+    case ClientType.CopilotCli:
+    case ClientType.GeminiCli:
+    case ClientType.Junie:
       return importFromStandardJson(await readJsonConfig(configPath), 'mcpServers');
 
     case ClientType.Zed:

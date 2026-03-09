@@ -111,6 +111,24 @@ function translateGoose(server: McpServer): any {
   };
 }
 
+// --- Junie: standard JSON with explicit `type` field ---
+
+function translateJunie(server: McpServer): any {
+  if (server.transportType === 'sse') {
+    return {
+      type: 'sse',
+      url: server.url,
+      ...(Object.keys(server.env).length > 0 ? { env: server.env } : {}),
+    };
+  }
+  return {
+    type: 'stdio',
+    command: server.command,
+    args: server.args,
+    ...(Object.keys(server.env).length > 0 ? { env: server.env } : {}),
+  };
+}
+
 // --- JetBrains: XML format, special handling ---
 
 export interface JetBrainsTranslated {
@@ -143,10 +161,19 @@ export function translateForClient(server: McpServer, clientType: ClientType): T
     case ClientType.Windsurf:
     case ClientType.VSCodeCline:
     case ClientType.CopilotCli:
+    case ClientType.GeminiCli:
       return {
         sectionKey: 'mcpServers',
         serverName: server.name,
         config: translateStandard(server),
+        format: 'json',
+      };
+
+    case ClientType.Junie:
+      return {
+        sectionKey: 'mcpServers',
+        serverName: server.name,
+        config: translateJunie(server),
         format: 'json',
       };
 
@@ -205,4 +232,4 @@ export function translateForClient(server: McpServer, clientType: ClientType): T
   }
 }
 
-export { translateStandard, translateZed, translateContinueDev, translateOpenCode, translateCody, translateGoose, translateJetBrains, sanitizeJetBrainsArg };
+export { translateStandard, translateZed, translateContinueDev, translateOpenCode, translateCody, translateGoose, translateJunie, translateJetBrains, sanitizeJetBrainsArg };

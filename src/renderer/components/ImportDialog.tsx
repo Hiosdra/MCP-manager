@@ -19,6 +19,9 @@ const CLIENT_ICONS: Record<string, string> = {
   [ClientType.Goose]: '🪿',
   [ClientType.VSCodeCline]: '💻',
   [ClientType.JetBrains]: '🧠',
+  [ClientType.CopilotCli]: '🐙',
+  [ClientType.GeminiCli]: '💎',
+  [ClientType.Junie]: '🐾',
 };
 
 export default function ImportDialog({ existingServerNames, onImport, onClose }: ImportDialogProps) {

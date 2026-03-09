@@ -56,7 +56,7 @@ export default function Dashboard({ servers, loading, onEdit, onDelete, onManage
           return (
             <div
               key={server.id}
-              className="bg-gray-800 rounded-lg border border-gray-700 p-5 hover:border-gray-600 transition-colors group"
+              className="bg-gray-800 rounded-lg border border-gray-700 p-5 hover:border-gray-600 transition-colors group flex flex-col"
             >
               {/* Header */}
               <div className="flex items-start justify-between mb-3">
@@ -79,7 +79,7 @@ export default function Dashboard({ servers, loading, onEdit, onDelete, onManage
                 {server.transportType === 'stdio' ? (
                   <div className="text-sm text-gray-400">
                     <span className="text-gray-500">Command:</span>{' '}
-                    <code className="text-gray-300 bg-gray-700/50 px-1.5 py-0.5 rounded text-xs">
+                    <code className="text-gray-300 bg-gray-700/50 px-1.5 py-0.5 rounded text-xs break-all">
                       {server.command} {server.args.join(' ')}
                     </code>
                   </div>
@@ -99,7 +99,7 @@ export default function Dashboard({ servers, loading, onEdit, onDelete, onManage
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pt-3 border-t border-gray-700">
+              <div className="flex items-center gap-2 pt-3 border-t border-gray-700 mt-auto">
                 <button
                   onClick={() => onManageSync(server.id)}
                   className="flex-1 text-sm px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors"

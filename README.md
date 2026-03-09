@@ -20,6 +20,9 @@ Every AI client (Claude Desktop, Cursor, Zed, Continue.dev, etc.) maintains its 
 | Sourcegraph Cody | JSON | `cody.mcpServers` |
 | Goose (Block) | YAML (map) | `extensions` (cmd, envs) |
 | JetBrains IDEs | XML | `llm.mcpServers` |
+| Copilot CLI | JSON | `mcpServers` |
+| Gemini CLI | JSON | `mcpServers` (`httpUrl` for remote servers) |
+| Junie | JSON | `mcpServers` (`type: stdio`, `mcp-remote` bridge for remote servers) |
 
 ## Architecture
 
@@ -34,7 +37,7 @@ Every AI client (Claude Desktop, Cursor, Zed, Continue.dev, etc.) maintains its 
 │  └──────────┘           │               │
 │       │        ┌────────┴──────────┐    │
 │       │        │ Schema Translators │    │
-│       │        │ (10 client formats)│    │
+│       │        │ (13 client formats)│    │
 │       │        └────────┬──────────┘    │
 │       │                 │               │
 │       │        ┌────────┴──────────┐    │
@@ -95,6 +98,8 @@ npm run dev:docs
 npm run build:docs
 ```
 
+An example GitHub Pages deployment workflow is included at `.github/workflows/deploy-docs.yml`.
+
 ### Run Tests
 
 ```bash
@@ -121,7 +126,7 @@ src/
 │   ├── preload.ts           # contextBridge (secure IPC)
 │   ├── database/            # SQLite schema & repository
 │   ├── parsers/             # JSON, JSONC, YAML, XML parsers
-│   ├── translators/         # Schema translators (10 clients)
+│   ├── translators/         # Schema translators (13 clients)
 │   ├── sync/                # Sync engine (backup, translate, write)
 │   └── utils/               # Client detector, path mapping
 ├── renderer/                # React frontend
@@ -137,8 +142,9 @@ docs/
 └── vite.config.ts           # Standalone docs build config
 
 tests/
-├── schemaTranslator.test.ts # 23 tests — all 10 client formats
+├── schemaTranslator.test.ts # 27 tests — all 13 client formats
 ├── parsers.test.ts          # 22 tests — JSON, JSONC, YAML, XML
 ├── serverRepository.test.ts # 12 tests — CRUD + sync targets
-└── syncEngine.test.ts       # 11 tests — end-to-end sync + backup
+├── syncEngine.test.ts       # 13 tests — end-to-end sync + backup
+└── clientDetector.test.ts   # 2 tests — Gemini CLI and Junie path detection
 ```

@@ -351,31 +351,8 @@ export default function App() {
         </section>
       </main>
 
-      <footer className="section-shell pb-12">
-        <div className="glass-panel flex flex-col gap-8 p-8 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="section-kicker">Ready for publishing later</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">A polished docsite now, GitHub Pages deploy later.</h2>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
-              The docs build is isolated, static, and easy to host, while the Electron product continues to evolve independently.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <a
-              href="#top"
-              className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
-            >
-              Back to top
-            </a>
-            <a
-              href="#quickstart"
-              className="inline-flex items-center justify-center rounded-full bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-sky-300"
-            >
-              Build the docs
-            </a>
-          </div>
-        </div>
-      </footer>
+
+
     </div>
   );
 }

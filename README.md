@@ -83,6 +83,18 @@ npm run dev
 npm run build
 ```
 
+### Documentation Site
+
+The repository now includes a standalone docs app under `docs/` that is ready to be published as a static site later (for example on GitHub Pages).
+
+```bash
+# Run the docs site locally
+npm run dev:docs
+
+# Build the static docs output into dist/docs
+npm run build:docs
+```
+
 ### Run Tests
 
 ```bash
@@ -118,6 +130,11 @@ src/
 │   └── hooks/               # useServers, useDetectedClients, useSync
 └── shared/
     └── types.ts             # Shared TypeScript types & interfaces
+
+docs/
+├── index.html               # Static docs entry
+├── src/                     # React-powered documentation site
+└── vite.config.ts           # Standalone docs build config
 
 tests/
 ├── schemaTranslator.test.ts # 23 tests — all 10 client formats

@@ -5,14 +5,17 @@
   "main": "dist/main/main.js",
   "scripts": {
     "dev": "npm run rebuild:electron && npm run build:main && concurrently \"vite\" \"vite build --config vite.main.config.ts --watch\" \"sleep 2 && electron .\"",
+    "dev:docs": "vite --config docs/vite.config.ts",
     "dev:renderer": "vite",
     "dev:main": "vite build --config vite.main.config.ts --watch",
     "build": "vite build && vite build --config vite.main.config.ts",
+    "build:docs": "vite build --config docs/vite.config.ts",
     "build:renderer": "vite build",
     "build:main": "vite build --config vite.main.config.ts",
     "rebuild:electron": "electron-rebuild -f -w better-sqlite3",
     "rebuild:node": "npm rebuild better-sqlite3",
     "test": "npm run rebuild:node && vitest run",
+    "preview:docs": "vite preview --config docs/vite.config.ts",
     "test:watch": "npm run rebuild:node && vitest"
   },
   "dependencies": {

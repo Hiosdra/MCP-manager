@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 32%),
+    radial-gradient(circle at right, rgba(99, 102, 241, 0.2), transparent 28%),
+    linear-gradient(180deg, #020617 0%, #020617 45%, #0f172a 100%);
+  color: #e2e8f0;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(56, 189, 248, 0.35);
+  color: #f8fafc;
+}
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12;
+  }
+
+  .glass-panel {
+    @apply rounded-[1.75rem] border border-white/10 bg-white/[0.04] shadow-2xl shadow-slate-950/40 backdrop-blur;
+  }
+
+  .section-kicker {
+    @apply text-sm font-semibold uppercase tracking-[0.32em] text-sky-300;
+  }
+
+  .section-heading {
+    @apply mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl;
+  }
+
+  .section-copy {
+    @apply mt-4 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-slate-200;
+  }
+}

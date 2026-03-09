@@ -6,6 +6,7 @@ import ServerForm from './components/ServerForm';
 import SyncHub from './components/SyncHub';
 import StatusBar from './components/StatusBar';
 import ImportDialog from './components/ImportDialog';
+import Onboarding, { useOnboarding } from './components/Onboarding';
 
 type View = 'dashboard' | 'sync-hub';
 
@@ -23,6 +24,7 @@ export default function App() {
   const [syncContext, setSyncContext] = useState<SyncContext | null>(null);
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
   const [showImport, setShowImport] = useState(false);
+  const { showOnboarding, dismissOnboarding } = useOnboarding();
 
   const handleAddServer = () => {
     setEditingServer(null);
@@ -185,6 +187,8 @@ export default function App() {
           onClose={() => setShowImport(false)}
         />
       )}
+
+      {showOnboarding && <Onboarding onDismiss={dismissOnboarding} />}
     </div>
   );
 }

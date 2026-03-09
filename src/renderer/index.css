@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source "../renderer/**/*.{tsx,ts}";
+@source "../../index.html";
 
 .app-drag-region {
   -webkit-app-region: drag;

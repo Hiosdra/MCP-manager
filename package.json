@@ -19,29 +19,30 @@
     "test:watch": "npm run rebuild:node && vitest"
   },
   "dependencies": {
-    "better-sqlite3": "^11.7.0",
+    "@tailwindcss/postcss": "^4.2.1",
+    "better-sqlite3": "^12.6.2",
     "jsonc-parser": "^3.3.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "xml2js": "^0.6.2",
-    "yaml": "^2.7.0"
+    "yaml": "^2.8.2"
   },
   "devDependencies": {
     "@electron/rebuild": "^4.0.3",
-    "@types/better-sqlite3": "^7.6.12",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "@types/xml2js": "^0.4.14",
-    "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
-    "concurrently": "^9.1.2",
-    "electron": "^33.2.1",
-    "electron-builder": "^25.1.8",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3",
-    "vite": "^6.0.7",
-    "vitest": "^3.0.4"
+    "@vitejs/plugin-react": "^5.1.4",
+    "autoprefixer": "^10.4.27",
+    "concurrently": "^9.2.1",
+    "electron": "^40.8.0",
+    "electron-builder": "^26.8.1",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
   },
   "build": {
     "appId": "com.mcp-manager.app",

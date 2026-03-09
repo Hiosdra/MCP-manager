@@ -1,0 +1,52 @@
+import Database from 'better-sqlite3';
+import path from 'path';
+import { app } from 'electron';
+import fs from 'fs';
+
+/** Get the database path - in user data directory */
+export function getDbPath(): string {
+  try {
+    const userDataPath = app.getPath('userData');
+    return path.join(userDataPath, 'mcp-manager.db');
+  } catch {
+    // Fallback for testing outside Electron
+    return path.join(process.cwd(), 'mcp-manager.db');
+  }
+}
+
+/** Initialize and return the SQLite database with WAL mode and schema */
+export function initDatabase(dbPath?: string): Database.Database {
+  const finalPath = dbPath || getDbPath();
+  const dir = path.dirname(finalPath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  const db = new Database(finalPath);
+  db.pragma('journal_mode = WAL');
+  db.pragma('foreign_keys = ON');
+
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS servers (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      command TEXT NOT NULL,
+      args TEXT NOT NULL DEFAULT '[]',
+      env TEXT NOT NULL DEFAULT '{}',
+      transport_type TEXT NOT NULL DEFAULT 'stdio',
+      url TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS sync_targets (
+      server_id TEXT NOT NULL,
+      client_type TEXT NOT NULL,
+      enabled INTEGER NOT NULL DEFAULT 1,
+      PRIMARY KEY (server_id, client_type),
+      FOREIGN KEY (server_id) REFERENCES servers(id) ON DELETE CASCADE
+    );
+  `);
+
+  return db;
+}

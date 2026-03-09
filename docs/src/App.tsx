@@ -117,10 +117,10 @@ export default function App() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-300 to-transparent" />
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Operational preview</p>
-                <h2 className="mt-3 text-2xl font-semibold text-white">A docsite that mirrors the product story</h2>
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">How it works</p>
+                <h2 className="mt-3 text-2xl font-semibold text-white">One control plane for every MCP client</h2>
               </div>
-              <span className="chip border-sky-300/20 bg-sky-300/10 text-sky-100">Static and GitHub Pages friendly</span>
+              <span className="chip border-sky-300/20 bg-sky-300/10 text-sky-100">Electron + React + SQLite</span>
             </div>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -145,7 +145,7 @@ export default function App() {
                 <code>{quickstartCommands}</code>
               </pre>
               <p className="mt-4 text-sm leading-7 text-slate-400">
-                The docs build emits static assets into <code className="rounded bg-white/5 px-1.5 py-0.5 text-slate-200">dist/docs</code> for later publishing.
+                Clone the repository, install dependencies, and start managing your MCP servers in minutes.
               </p>
             </div>
           </div>
@@ -175,7 +175,7 @@ export default function App() {
           <SectionHeading
             eyebrow="Feature highlights"
             title="Everything needed to manage MCP configuration as a product, not a pile of local files."
-            description="The current project already combines Electron, SQLite, translators, parsers, and a React operations UI. The docsite packages that story into a clear landing page for users and contributors."
+            description="The project combines Electron, SQLite, translators, parsers, and a React operations UI into a cohesive desktop experience for users and contributors."
           />
 
           <div className="mt-12 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
@@ -243,7 +243,7 @@ export default function App() {
           <SectionHeading
             eyebrow="Architecture"
             title="Built as a secure desktop control plane with a modern React renderer."
-            description="The docsite surfaces the project architecture in the same crisp way the app presents servers and integrations: clear layers, explicit responsibilities, and a secure IPC boundary."
+            description="Clear layers, explicit responsibilities, and a secure IPC boundary between the Electron main process and the React renderer."
           />
 
           <div className="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
@@ -294,8 +294,8 @@ export default function App() {
         <section id="quickstart" className="section-shell pb-24">
           <SectionHeading
             eyebrow="Quickstart"
-            title="Use the same repository tooling to run the product and the docs site."
-            description="No extra packages are required. The docs experience shares the existing React, Vite, and Tailwind foundation, while staying isolated from the Electron runtime."
+            title="Get up and running in under a minute."
+            description="Clone the repo, install dependencies, and launch the Electron app. The stack uses React, Vite, and Tailwind — no extra packages required."
           />
 
           <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_0.95fr]">
@@ -305,28 +305,28 @@ export default function App() {
                 <code>{quickstartCommands}</code>
               </pre>
               <p className="mt-5 text-sm leading-7 text-slate-400">
-                For deployment later, publish the contents of <code className="rounded bg-white/5 px-1.5 py-0.5 text-slate-200">dist/docs</code>.
+                Run <code className="rounded bg-white/5 px-1.5 py-0.5 text-slate-200">npm run dev</code> to start the app in development mode with hot reload.
               </p>
             </div>
 
             <div className="glass-panel p-7">
-              <h3 className="text-xl font-semibold text-white">What this docs site covers</h3>
+              <h3 className="text-xl font-semibold text-white">What’s included</h3>
               <ul className="mt-6 space-y-4 text-base leading-8 text-slate-300">
                 <li className="flex items-start gap-3">
                   <span className="mt-2 h-2.5 w-2.5 rounded-full bg-sky-300" />
-                  A strong landing page for the project value proposition.
+                  Translators for 10 AI clients covering JSON, JSONC, YAML, and XML formats.
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-2 h-2.5 w-2.5 rounded-full bg-sky-300" />
-                  Clear summaries of supported clients, workflow, and architecture.
+                  Automatic client detection and config import from installed tools.
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-2 h-2.5 w-2.5 rounded-full bg-sky-300" />
-                  Static output with relative assets, which is convenient for GitHub Pages.
+                  Backup-first sync engine with retry logic and format-aware writes.
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-2 h-2.5 w-2.5 rounded-full bg-sky-300" />
-                  Styling that matches the project’s existing dark, high-contrast design language.
+                  A polished React UI for managing servers, integrations, and sync targets.
                 </li>
               </ul>
             </div>
@@ -336,8 +336,8 @@ export default function App() {
         <section id="faq" className="section-shell pb-24">
           <SectionHeading
             eyebrow="FAQ"
-            title="A few practical answers before you publish."
-            description="The docsite is intentionally lightweight and static, which keeps future GitHub Pages deployment simple."
+            title="Common questions, answered."
+            description="Practical answers about how MCP Manager works, what it supports, and how to get started."
           />
 
           <div className="mt-12 space-y-5">

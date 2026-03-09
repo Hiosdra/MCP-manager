@@ -225,19 +225,19 @@ export const architectureLayers: ArchitectureLayer[] = [
 
 export const faqItems: FaqItem[] = [
   {
-    question: 'Is the docs site separate from the Electron app?',
+    question: 'Does MCP Manager modify my client configs directly?',
     answer:
-      'Yes. The docs site lives under docs/ as a standalone Vite + React build, so it can be published statically without dragging in Electron runtime concerns.',
+      'Yes, but safely. The sync engine creates a backup of every config file before writing, and translators preserve existing formatting, comments, and client-specific fields.',
   },
   {
-    question: 'Will the docs site work on GitHub Pages?',
+    question: 'Can I use it with clients that are not listed yet?',
     answer:
-      'Yes. It uses a static build with relative asset paths, which makes publishing the output from dist/docs straightforward on GitHub Pages.',
+      'The translator layer is designed to be extensible. Adding support for a new client means implementing a translator that maps the canonical server definition to the target format.',
   },
   {
-    question: 'Do I need extra dependencies to work on the docs?',
+    question: 'Do I need to install anything beyond Node.js?',
     answer:
-      'No. The docs site reuses the repository’s existing React, Vite, and Tailwind tooling, so the current dependency set is enough.',
+      'No. The project uses Electron, React, Vite, and Tailwind — all managed through npm. Just run npm install and you are ready to go.',
   },
 ];
 
@@ -259,5 +259,4 @@ AI client configs written in JSON, JSONC, YAML, and XML`;
 export const quickstartCommands = `npm install
 npm run dev
 npm run build
-npm run build:docs
 npm test`;

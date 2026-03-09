@@ -1,4 +1,4 @@
-# Copilot Instructions
+# Agents
 
 ## Git Workflow
 

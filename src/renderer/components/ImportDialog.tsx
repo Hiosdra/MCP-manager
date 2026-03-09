@@ -149,17 +149,17 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
   const installedClients = clients.filter((c) => c.installed);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" role="dialog" aria-label="Import servers">
-      <div className="bg-gray-800 rounded-xl border border-gray-700 shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col m-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center modal-overlay" role="dialog" aria-label="Import servers">
+      <div className="modal-panel rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col m-4 animate-fade-in-up">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
           <div>
-            <h2 className="text-lg font-semibold text-white">Import Servers</h2>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <h2 className="text-lg font-semibold text-slate-100">Import Servers</h2>
+            <p className="text-sm text-slate-500 mt-0.5">
               Pull existing MCP server configs from your AI clients
             </p>
           </div>
-          <button onClick={onClose} aria-label="Close dialog" className="text-gray-400 hover:text-white transition-colors">
+          <button onClick={onClose} aria-label="Close dialog" className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-slate-200 transition-all duration-200">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -176,7 +176,7 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
                 <button
                   onClick={handleScanAll}
                   disabled={scanning || installedClients.length === 0}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors disabled:opacity-50"
+                  className="btn-gradient flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-lg text-white disabled:opacity-50"
                 >
                   {scanning ? (
                     <>
@@ -199,19 +199,21 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
                   {installedClients.map((client) => (
                     <div
                       key={client.clientType}
-                      className="flex items-center justify-between bg-gray-750 rounded-lg border border-gray-700 px-4 py-3"
+                      className="integration-row flex items-center justify-between rounded-xl px-4 py-3"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-xl">{client.icon || CLIENT_ICONS[client.clientType] || '🔧'}</span>
+                        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center text-lg border border-white/5">
+                          {client.icon || CLIENT_ICONS[client.clientType] || '🔧'}
+                        </div>
                         <div>
-                          <span className="font-medium text-white text-sm">{client.displayName}</span>
-                          <p className="text-xs text-gray-500 truncate max-w-xs">{client.configPath}</p>
+                          <span className="font-medium text-slate-200 text-sm">{client.displayName}</span>
+                          <p className="text-xs text-slate-500 truncate max-w-xs font-mono">{client.configPath}</p>
                         </div>
                       </div>
                       <button
                         onClick={() => handleScanClient(client.clientType)}
                         disabled={scanning}
-                        className="text-xs px-2.5 py-1 rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors disabled:opacity-50"
+                        className="text-xs font-medium px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-all duration-200 border border-white/5 hover:border-white/10 disabled:opacity-50"
                       >
                         Scan
                       </button>
@@ -349,21 +351,21 @@ export default function ImportDialog({ existingServerNames, onImport, onClose }:
 
         {/* Footer */}
         {scanResults && discoveredServers.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-700">
-            <span className="text-sm text-gray-400">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
+            <span className="text-sm text-slate-400">
               {selected.size} selected
             </span>
             <div className="flex items-center gap-3">
               <button
                 onClick={onClose}
-                className="px-4 py-2 text-sm rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
+                className="px-4 py-2 text-sm font-medium rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-all duration-200 border border-white/5 hover:border-white/10"
               >
                 Cancel
               </button>
               <button
                 onClick={handleImport}
                 disabled={selected.size === 0 || importing}
-                className="px-4 py-2 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-gradient px-4 py-2 text-sm font-medium rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {importing ? 'Importing…' : `Import ${selected.size} Server${selected.size !== 1 ? 's' : ''}`}
               </button>

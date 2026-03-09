@@ -98,22 +98,22 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
   };
 
   const inputClass =
-    'w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent';
-  const labelClass = 'block text-sm font-medium text-gray-300 mb-1';
-  const errorClass = 'text-red-400 text-xs mt-1';
+    'form-input w-full rounded-lg px-3.5 py-2.5 text-sm text-slate-200 placeholder-slate-500';
+  const labelClass = 'block text-sm font-medium text-slate-300 mb-1.5';
+  const errorClass = 'text-red-400 text-xs mt-1.5';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" role="dialog" aria-label={server ? 'Edit server' : 'Add server'}>
-      <div className="bg-gray-800 rounded-xl border border-gray-700 shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto m-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center modal-overlay" role="dialog" aria-label={server ? 'Edit server' : 'Add server'}>
+      <div className="modal-panel rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto m-4 animate-fade-in-up">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
-          <h2 className="text-lg font-semibold text-white">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+          <h2 className="text-lg font-semibold text-slate-100">
             {server ? 'Edit Server' : 'Add Server'}
           </h2>
           <button
             onClick={onCancel}
             aria-label="Close dialog"
-            className="text-gray-400 hover:text-white transition-colors"
+            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-slate-200 transition-all duration-200"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -267,24 +267,24 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
 
           {/* Save Error */}
           {saveError && (
-            <div className="bg-red-500/10 border border-red-500/30 rounded-md p-3 text-sm text-red-400">
+            <div className="bg-red-500/8 border border-red-500/20 rounded-xl p-3.5 text-sm text-red-300">
               {saveError}
             </div>
           )}
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex items-center justify-end gap-3 pt-3">
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 text-sm rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
+              className="px-4 py-2.5 text-sm font-medium rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-all duration-200 border border-white/5 hover:border-white/10"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-4 py-2 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-gradient px-5 py-2.5 text-sm font-medium rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? 'Saving…' : server ? 'Update Server' : 'Add Server'}
             </button>

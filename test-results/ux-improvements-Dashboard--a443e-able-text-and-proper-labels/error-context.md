@@ -1,0 +1,82 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - heading "MCP Manager" [level=1] [ref=e6]
+      - navigation "Main navigation" [ref=e7]:
+        - button "Servers" [ref=e8]
+        - button "Integrations" [ref=e9]
+    - generic [ref=e10]:
+      - button "Import servers" [ref=e11]:
+        - img [ref=e12]
+        - text: Import
+      - button "Add server" [ref=e14]:
+        - img [ref=e15]
+        - text: Add Server
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - heading "Server Library" [level=1] [ref=e21]
+          - paragraph [ref=e22]: 3 servers configured
+        - generic [ref=e23]:
+          - img
+          - textbox "Filter servers" [ref=e24]:
+            - /placeholder: Filter servers…
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - img [ref=e29]
+            - heading "GitHub MCP" [level=3] [ref=e32]
+            - generic [ref=e33]: stdio
+          - generic [ref=e34]:
+            - code [ref=e35]: npx -y @modelcontextprotocol/server-github
+            - generic [ref=e36]:
+              - img [ref=e37]
+              - text: 1 env var
+          - generic [ref=e39]:
+            - button "Sync GitHub MCP" [ref=e40]:
+              - img [ref=e41]
+              - text: Sync
+            - button "Edit GitHub MCP" [ref=e43]: Edit
+            - button "Delete GitHub MCP" [ref=e44]: Delete
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - img [ref=e48]
+            - heading "Filesystem Server" [level=3] [ref=e51]
+            - generic [ref=e52]: stdio
+          - code [ref=e54]: npx -y @modelcontextprotocol/server-filesystem /tmp
+          - generic [ref=e55]:
+            - button "Sync Filesystem Server" [ref=e56]:
+              - img [ref=e57]
+              - text: Sync
+            - button "Edit Filesystem Server" [ref=e59]: Edit
+            - button "Delete Filesystem Server" [ref=e60]: Delete
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - img [ref=e64]
+            - heading "Remote SSE Server" [level=3] [ref=e67]
+            - generic [ref=e68]: sse
+          - generic [ref=e69]:
+            - code [ref=e70]: http://localhost:3000/sse
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - text: 1 env var
+          - generic [ref=e74]:
+            - button "Sync Remote SSE Server" [ref=e75]:
+              - img [ref=e76]
+              - text: Sync
+            - button "Edit Remote SSE Server" [ref=e78]: Edit
+            - button "Delete Remote SSE Server" [ref=e79]: Delete
+  - generic [ref=e80]:
+    - generic [ref=e81]:
+      - generic [ref=e82]:
+        - generic [ref=e84]: "3"
+        - text: servers
+      - generic [ref=e85]:
+        - generic [ref=e87]: "2"
+        - text: clients
+    - generic [ref=e88]: No sync yet
+```

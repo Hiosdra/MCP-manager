@@ -81,22 +81,22 @@ export default function App() {
   const installedClientCount = clients.filter((c) => c.installed).length;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-[#0b1121] text-white flex flex-col">
       {/* Navigation bar */}
-      <header className="flex items-center justify-between pl-20 pr-6 py-3 bg-gray-800 border-b border-gray-700 app-drag-region">
+      <header className="glass-header flex items-center justify-between pl-20 pr-6 py-3 app-drag-region">
         <div className="flex items-center gap-4 no-drag">
           <h1 className="text-lg font-bold tracking-tight">
-            <span className="text-blue-400">MCP</span> Manager
+            <span className="gradient-text">MCP</span> <span className="text-slate-200">Manager</span>
           </h1>
           <nav className="flex items-center gap-1 ml-4" aria-label="Main navigation">
             <button
               onClick={() => { setView('dashboard'); setSyncContext(null); }}
               aria-label="Servers"
               aria-current={view === 'dashboard' ? 'page' : undefined}
-              className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+              className={`px-3.5 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 ${
                 view === 'dashboard'
-                  ? 'bg-gray-700 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                  ? 'nav-pill-active'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
               Servers
@@ -105,10 +105,10 @@ export default function App() {
               onClick={() => { setView('sync-hub'); setSyncContext(null); }}
               aria-label="Integrations"
               aria-current={view === 'sync-hub' && !syncContext ? 'page' : undefined}
-              className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+              className={`px-3.5 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 ${
                 view === 'sync-hub' && !syncContext
-                  ? 'bg-gray-700 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                  ? 'nav-pill-active'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
               Integrations
@@ -116,13 +116,13 @@ export default function App() {
           </nav>
         </div>
         {view === 'dashboard' && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <button
               onClick={() => setShowImport(true)}
               aria-label="Import servers"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-all duration-200 border border-white/5 hover:border-white/10"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               Import
@@ -130,7 +130,7 @@ export default function App() {
             <button
               onClick={handleAddServer}
               aria-label="Add server"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+              className="btn-gradient flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-lg text-white"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -143,13 +143,13 @@ export default function App() {
 
       {/* Error banner */}
       {error && (
-        <div className="mx-6 mt-4 bg-red-500/10 border border-red-500/30 rounded-md p-3 text-sm text-red-400">
+        <div className="mx-6 mt-4 bg-red-500/8 border border-red-500/20 rounded-xl p-3.5 text-sm text-red-300 backdrop-blur-sm">
           {error}
         </div>
       )}
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto bg-gradient-to-b from-[#0b1121] to-[#0f1729]">
         {view === 'dashboard' && (
           <Dashboard
             servers={servers}

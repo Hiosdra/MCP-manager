@@ -12,6 +12,8 @@ const api: ElectronAPI = {
     ipcRenderer.invoke('set-sync-target', serverId, clientType, enabled),
   syncServer: (serverId) => ipcRenderer.invoke('sync-server', serverId),
   syncAll: () => ipcRenderer.invoke('sync-all'),
+  importFromClient: (clientType) => ipcRenderer.invoke('import-from-client', clientType),
+  importFromAllClients: () => ipcRenderer.invoke('import-from-all-clients'),
 };
 
 contextBridge.exposeInMainWorld('api', api);

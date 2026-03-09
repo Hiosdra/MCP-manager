@@ -92,6 +92,7 @@ npm test
 ## Key Features
 
 - **Single Source of Truth** — define servers once in the manager's SQLite database
+- **Import from Existing Clients** — scan your AI tools and pull in their existing MCP server configs
 - **Lossless Config Editing** — JSONC comments and YAML formatting are preserved
 - **Automatic Backup** — `.backup` files created before every config mutation
 - **Retry with Exponential Backoff** — handles file locks (EPERM) on Windows
@@ -124,7 +125,3 @@ tests/
 ├── serverRepository.test.ts # 12 tests — CRUD + sync targets
 └── syncEngine.test.ts       # 11 tests — end-to-end sync + backup
 ```
-
-## License
-
-MIT

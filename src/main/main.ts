@@ -4,6 +4,7 @@ import { initDatabase } from './database/schema.js';
 import { ServerRepository } from './database/serverRepository.js';
 import { detectClients, getClientConfigPath } from './utils/clientDetector.js';
 import { syncServerToClient, syncServerToAllTargets } from './sync/syncEngine.js';
+import { importServersFromClient, importServersFromAllClients } from './sync/importEngine.js';
 import { McpServerInput, ClientType } from '../shared/types.js';
 
 let mainWindow: BrowserWindow | null = null;
@@ -105,6 +106,15 @@ function registerIpcHandlers() {
     }
 
     return allResults;
+  });
+
+  // --- Import operations ---
+  ipcMain.handle('import-from-client', async (_event, clientType: ClientType) => {
+    return importServersFromClient(clientType);
+  });
+
+  ipcMain.handle('import-from-all-clients', async () => {
+    return importServersFromAllClients();
   });
 }
 

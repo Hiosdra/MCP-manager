@@ -63,6 +63,13 @@ export interface DetectedClient {
   icon?: string; // emoji or icon identifier
 }
 
+// Result of importing servers from a client
+export interface ImportResult {
+  clientType: ClientType;
+  servers: McpServerInput[];
+  error?: string;
+}
+
 // IPC API exposed to renderer via preload
 export interface ElectronAPI {
   getServers: () => Promise<McpServer[]>;
@@ -74,6 +81,8 @@ export interface ElectronAPI {
   setSyncTarget: (serverId: string, clientType: ClientType, enabled: boolean) => Promise<void>;
   syncServer: (serverId: string) => Promise<SyncResult[]>;
   syncAll: () => Promise<SyncResult[]>;
+  importFromClient: (clientType: ClientType) => Promise<ImportResult>;
+  importFromAllClients: () => Promise<ImportResult[]>;
 }
 
 // Augment Window interface for preload bridge

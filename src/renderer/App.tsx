@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
-import { McpServer } from '../shared/types';
+import { McpServer, McpServerInput } from '../shared/types';
 import { useServers, useDetectedClients } from './hooks/useApi';
 import Dashboard from './components/Dashboard';
 import ServerForm from './components/ServerForm';
 import SyncHub from './components/SyncHub';
 import StatusBar from './components/StatusBar';
+import ImportDialog from './components/ImportDialog';
 
 type View = 'dashboard' | 'sync-hub';
 
@@ -21,6 +22,7 @@ export default function App() {
   const [showForm, setShowForm] = useState(false);
   const [syncContext, setSyncContext] = useState<SyncContext | null>(null);
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
+  const [showImport, setShowImport] = useState(false);
 
   const handleAddServer = () => {
     setEditingServer(null);
@@ -64,6 +66,18 @@ export default function App() {
     setView('dashboard');
   };
 
+  const handleImport = async (serversToImport: McpServerInput[]) => {
+    for (const server of serversToImport) {
+      try {
+        await window.api.addServer(server);
+      } catch (err) {
+        console.error(`Failed to import server "${server.name}":`, err);
+      }
+    }
+    setShowImport(false);
+    refresh();
+  };
+
   const installedClientCount = clients.filter((c) => c.installed).length;
 
   return (
@@ -98,15 +112,26 @@ export default function App() {
           </nav>
         </div>
         {view === 'dashboard' && (
-          <button
-            onClick={handleAddServer}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Add Server
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowImport(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Import
+            </button>
+            <button
+              onClick={handleAddServer}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Add Server
+            </button>
+          </div>
         )}
       </header>
 
@@ -151,6 +176,15 @@ export default function App() {
           server={editingServer ?? undefined}
           onSave={handleFormSave}
           onCancel={handleFormCancel}
+        />
+      )}
+
+      {/* Import dialog */}
+      {showImport && (
+        <ImportDialog
+          existingServerNames={servers.map((s) => s.name)}
+          onImport={handleImport}
+          onClose={() => setShowImport(false)}
         />
       )}
     </div>

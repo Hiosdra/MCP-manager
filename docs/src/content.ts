@@ -7,12 +7,14 @@ export interface Metric {
 export interface ProblemCard {
   title: string;
   description: string;
+  icon: string;
 }
 
 export interface FeatureCard {
   title: string;
   description: string;
   accent: string;
+  icon: string;
 }
 
 export interface ClientCard {
@@ -25,6 +27,7 @@ export interface ClientCard {
 export interface WorkflowStep {
   title: string;
   description: string;
+  icon: string;
 }
 
 export interface ArchitectureLayer {
@@ -66,16 +69,19 @@ export const metrics: Metric[] = [
 
 export const problemCards: ProblemCard[] = [
   {
+    icon: '🧩',
     title: 'Fragmented configuration',
     description:
       'Every AI client stores MCP settings in a different path, format, and schema, which turns simple updates into repetitive maintenance.',
   },
   {
+    icon: '⚠️',
     title: 'Risky manual edits',
     description:
       'Editing JSON, JSONC, YAML, or XML by hand makes backups, quoting, and validation your responsibility instead of the tool’s.',
   },
   {
+    icon: '🌊',
     title: 'Tooling drift',
     description:
       'As teams experiment with more MCP-enabled tools, configs drift apart quickly and servers stop behaving consistently.',
@@ -84,36 +90,42 @@ export const problemCards: ProblemCard[] = [
 
 export const featureCards: FeatureCard[] = [
   {
+    icon: '🎯',
     title: 'Single source of truth',
     description:
       'Manage all MCP servers in one desktop app backed by SQLite, then fan those definitions out to every connected client.',
     accent: 'bg-sky-400/10 text-sky-200 ring-sky-400/30',
   },
   {
+    icon: '📥',
     title: 'Import existing setups',
     description:
       'Scan installed clients, pull in their current server definitions, and normalize them into one coherent registry.',
     accent: 'bg-indigo-400/10 text-indigo-200 ring-indigo-400/30',
   },
   {
+    icon: '🔄',
     title: 'Lossless translation',
     description:
       'Preserve JSONC comments, YAML formatting, and client-specific schema requirements while still keeping data centralized.',
     accent: 'bg-emerald-400/10 text-emerald-200 ring-emerald-400/30',
   },
   {
+    icon: '🛡️',
     title: 'Safe sync engine',
     description:
       'Create backups before writes, retry transient file-lock errors, and keep sync behavior predictable across platforms.',
     accent: 'bg-amber-400/10 text-amber-200 ring-amber-400/30',
   },
   {
+    icon: '🎛️',
     title: 'Per-client control',
     description:
       'Toggle each integration independently so every server only ships to the tools where it should actually run.',
     accent: 'bg-fuchsia-400/10 text-fuchsia-200 ring-fuchsia-400/30',
   },
   {
+    icon: '✨',
     title: 'Operator-friendly UX',
     description:
       'The React + Tailwind interface keeps server inventory, sync targets, and import workflows easy to reason about.',
@@ -186,16 +198,19 @@ export const supportedClients: ClientCard[] = [
 
 export const workflowSteps: WorkflowStep[] = [
   {
+    icon: '✍️',
     title: 'Define servers once',
     description:
       'Add a server in MCP Manager with its command, args, environment, and per-client sync preferences.',
   },
   {
+    icon: '🔍',
     title: 'Inspect and import',
     description:
       'Scan installed clients, detect existing configs, and import them into the local database instead of starting from scratch.',
   },
   {
+    icon: '🚀',
     title: 'Sync with confidence',
     description:
       'Run the sync engine to translate, back up, and write client-specific configuration files wherever they belong.',

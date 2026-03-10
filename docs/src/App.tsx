@@ -1,15 +1,9 @@
 import { useState, useEffect, useRef, type ReactNode } from 'react';
 import {
-  architectureDiagram,
-  architectureLayers,
-  faqItems,
   featureCards,
   metrics,
-  navItems,
-  problemCards,
   quickstartCommands,
   supportedClients,
-  workflowSteps,
 } from './content';
 
 /* ------------------------------------------------------------------ */
@@ -82,8 +76,6 @@ function formatClass(format: string) {
 /* ------------------------------------------------------------------ */
 
 export default function App() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
   return (
     <div className="relative overflow-x-hidden">
       {/* Ambient glows */}
@@ -105,20 +97,14 @@ export default function App() {
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
             <nav className="flex flex-wrap items-center gap-1 text-sm text-slate-300">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="rounded-full px-3 py-2 transition-all duration-200 hover:bg-white/5 hover:text-white"
-                >
-                  {item.label}
-                </a>
-              ))}
+              <a href="#features" className="rounded-full px-3 py-2 transition-all duration-200 hover:bg-white/5 hover:text-white">Features</a>
+              <a href="#supported-clients" className="rounded-full px-3 py-2 transition-all duration-200 hover:bg-white/5 hover:text-white">Clients</a>
+              <a href="#quickstart" className="rounded-full px-3 py-2 transition-all duration-200 hover:bg-white/5 hover:text-white">Quickstart</a>
             </nav>
 
             <div className="flex items-center gap-3">
               <a href="#quickstart" className="btn-ghost !px-4 !py-2 !text-sm">Quickstart</a>
-              <a href="#architecture" className="btn-primary !px-4 !py-2 !text-sm">Explore architecture</a>
+              <a href="#features" className="btn-primary !px-4 !py-2 !text-sm">Explore features</a>
             </div>
           </div>
         </div>
@@ -197,29 +183,6 @@ export default function App() {
           </Reveal>
         </section>
 
-        {/* ── Why this exists ── */}
-        <section id="overview" className="section-shell pb-24">
-          <SectionHeading
-            eyebrow="Why this exists"
-            title="MCP ecosystems grow faster than hand-maintained config files can keep up."
-            description="MCP Manager turns scattered local settings into an intentional system: discover clients, import what already exists, and keep every target synchronized from one canonical model."
-          />
-
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {problemCards.map((card, i) => (
-              <Reveal key={card.title} delay={i * 100}>
-                <article className="glass-panel glass-panel-hover h-full p-7">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-2xl">
-                    {card.icon}
-                  </div>
-                  <h3 className="mt-6 text-xl font-semibold text-white">{card.title}</h3>
-                  <p className="mt-4 text-base leading-8 text-slate-300">{card.description}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
         {/* ── Features ── */}
         <section id="features" className="section-shell pb-24">
           <SectionHeading
@@ -277,84 +240,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* ── Workflow ── */}
-        <section id="workflow" className="section-shell pb-24">
-          <SectionHeading
-            eyebrow="Workflow"
-            title="An opinionated loop for keeping local AI tooling consistent."
-            description="The product flow is straightforward on purpose: define your servers, import what is already installed, and sync every target with backup-first confidence."
-          />
-
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {workflowSteps.map((step, index) => (
-              <Reveal key={step.title} delay={index * 120}>
-                <article className="glass-panel glass-panel-hover h-full p-7">
-                  <div className="step-number">{index + 1}</div>
-                  <h3 className="mt-5 text-2xl font-semibold text-white">{step.title}</h3>
-                  <p className="mt-4 text-base leading-8 text-slate-300">{step.description}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Architecture ── */}
-        <section id="architecture" className="section-shell pb-24">
-          <SectionHeading
-            eyebrow="Architecture"
-            title="Built as a secure desktop control plane with a modern React renderer."
-            description="Clear layers, explicit responsibilities, and a secure IPC boundary between the Electron main process and the React renderer."
-          />
-
-          <div className="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="space-y-6">
-              {architectureLayers.map((layer, i) => (
-                <Reveal key={layer.title} delay={i * 100}>
-                  <article className="glass-panel glass-panel-hover p-7">
-                    <h3 className="text-xl font-semibold text-white">{layer.title}</h3>
-                    <p className="mt-4 text-base leading-8 text-slate-300">{layer.description}</p>
-                    <ul className="mt-5 space-y-3 text-sm text-slate-300">
-                      {layer.bullets.map((bullet) => (
-                        <li key={bullet} className="flex items-start gap-3">
-                          <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-sky-300" />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </article>
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal delay={150}>
-              <div className="glass-panel overflow-hidden p-7">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.26em] text-slate-400">System view</p>
-                    <h3 className="mt-3 text-2xl font-semibold text-white">How the pieces connect</h3>
-                  </div>
-                  <span className="chip">Electron + React + Tailwind + SQLite</span>
-                </div>
-
-                <pre className="code-block mt-8">
-                  <code>{architectureDiagram}</code>
-                </pre>
-
-                <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-3xl border border-white/10 bg-white/5 p-5 transition-colors duration-200 hover:border-sky-400/20">
-                    <p className="text-sm font-medium text-slate-400">Renderer stack</p>
-                    <p className="mt-3 text-lg font-semibold text-white">React 18, TypeScript, Tailwind CSS, Vite</p>
-                  </div>
-                  <div className="rounded-3xl border border-white/10 bg-white/5 p-5 transition-colors duration-200 hover:border-sky-400/20">
-                    <p className="text-sm font-medium text-slate-400">Desktop foundation</p>
-                    <p className="mt-3 text-lg font-semibold text-white">Electron main process with secure preload bridge</p>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
         {/* ── Quickstart ── */}
         <section id="quickstart" className="section-shell pb-24">
           <SectionHeading
@@ -397,48 +282,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* ── FAQ (accordion) ── */}
-        <section id="faq" className="section-shell pb-24">
-          <SectionHeading
-            eyebrow="FAQ"
-            title="Common questions, answered."
-            description="Practical answers about how MCP Manager works, what it supports, and how to get started."
-          />
-
-          <div className="mt-12 space-y-4">
-            {faqItems.map((item, i) => {
-              const isOpen = openFaq === i;
-              return (
-                <Reveal key={item.question} delay={i * 80}>
-                  <div className="faq-item" data-open={isOpen}>
-                    <button
-                      type="button"
-                      onClick={() => setOpenFaq(isOpen ? null : i)}
-                      className="flex w-full items-center justify-between gap-4 p-7 text-left"
-                    >
-                      <h3 className="text-xl font-semibold text-white">{item.question}</h3>
-                      <span
-                        className="shrink-0 text-2xl text-slate-400 transition-transform duration-300"
-                        style={{ transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}
-                      >
-                        +
-                      </span>
-                    </button>
-                    <div
-                      className="overflow-hidden transition-all duration-400 ease-out"
-                      style={{
-                        maxHeight: isOpen ? '12rem' : '0',
-                        opacity: isOpen ? 1 : 0,
-                      }}
-                    >
-                      <p className="px-7 pb-7 text-base leading-8 text-slate-300">{item.answer}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </section>
       </main>
 
       {/* ── Footer ── */}

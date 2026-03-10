@@ -20,6 +20,7 @@
     "dev:docs": "vite --config docs/vite.config.ts",
     "dev:renderer": "vite",
     "dev:main": "vite build --config vite.main.config.ts --watch",
+    "clean": "rm -rf dist node_modules/.cache node_modules/.vite test-results && npm run build",
     "build": "vite build && vite build --config vite.main.config.ts",
     "build:docs": "vite build --config docs/vite.config.ts",
     "build:renderer": "vite build",

@@ -58,5 +58,11 @@ export function initDatabase(dbPath?: string): Database.Database {
     );
   `);
 
+  // Migrate: add headers column if missing (for existing databases)
+  const columns = db.pragma('table_info(servers)') as Array<{ name: string }>;
+  if (!columns.some(c => c.name === 'headers')) {
+    db.exec(`ALTER TABLE servers ADD COLUMN headers TEXT NOT NULL DEFAULT '{}'`);
+  }
+
   return db;
 }

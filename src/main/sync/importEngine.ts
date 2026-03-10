@@ -137,15 +137,34 @@ function importFromJetBrains(data: any): McpServerInput[] {
     });
 }
 
+function importFromCopilotCli(data: any): McpServerInput[] {
+  const section = data?.mcpServers;
+  if (!section || typeof section !== 'object') return [];
+
+  return Object.entries(section).map(([name, config]: [string, any]) => {
+    const isHTTP = config.type === 'http';
+    return {
+      name,
+      command: config.command ?? '',
+      args: Array.isArray(config.args) ? config.args : [],
+      env: config.env && typeof config.env === 'object' ? config.env : {},
+      transportType: (isHTTP ? 'sse' : 'stdio') as TransportType,
+      ...(isHTTP ? { url: config.url } : {}),
+    };
+  });
+}
+
 // --- Main import function ---
 
 async function readClientConfig(clientType: ClientType, configPath: string): Promise<McpServerInput[]> {
   switch (clientType) {
+    case ClientType.CopilotCli:
+      return importFromCopilotCli(await readJsonConfig(configPath));
+
     case ClientType.ClaudeDesktop:
     case ClientType.Cursor:
     case ClientType.Windsurf:
     case ClientType.VSCodeCline:
-    case ClientType.CopilotCli:
     case ClientType.GeminiCli:
     case ClientType.Junie:
       return importFromStandardJson(await readJsonConfig(configPath), 'mcpServers');
@@ -211,5 +230,6 @@ export {
   importFromCody,
   importFromContinueDev,
   importFromGoose,
+  importFromCopilotCli,
   importFromJetBrains,
 };

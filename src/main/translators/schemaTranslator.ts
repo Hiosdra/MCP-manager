@@ -111,6 +111,28 @@ function translateGoose(server: McpServer): any {
   };
 }
 
+// --- Copilot CLI: JSON with `tools`, `type`, `source` fields ---
+
+function translateCopilotCli(server: McpServer): any {
+  if (server.transportType === 'sse') {
+    return {
+      tools: ['*'],
+      type: 'http',
+      url: server.url,
+      headers: {},
+      source: 'user',
+    };
+  }
+  return {
+    tools: ['*'],
+    type: 'local',
+    command: server.command,
+    args: server.args,
+    ...(Object.keys(server.env).length > 0 ? { env: server.env } : {}),
+    source: 'user',
+  };
+}
+
 // --- Junie: standard JSON with explicit `type` field ---
 
 function translateJunie(server: McpServer): any {
@@ -160,12 +182,19 @@ export function translateForClient(server: McpServer, clientType: ClientType): T
     case ClientType.Cursor:
     case ClientType.Windsurf:
     case ClientType.VSCodeCline:
-    case ClientType.CopilotCli:
     case ClientType.GeminiCli:
       return {
         sectionKey: 'mcpServers',
         serverName: server.name,
         config: translateStandard(server),
+        format: 'json',
+      };
+
+    case ClientType.CopilotCli:
+      return {
+        sectionKey: 'mcpServers',
+        serverName: server.name,
+        config: translateCopilotCli(server),
         format: 'json',
       };
 
@@ -232,4 +261,4 @@ export function translateForClient(server: McpServer, clientType: ClientType): T
   }
 }
 
-export { translateStandard, translateZed, translateContinueDev, translateOpenCode, translateCody, translateGoose, translateJunie, translateJetBrains, sanitizeJetBrainsArg };
+export { translateStandard, translateZed, translateContinueDev, translateOpenCode, translateCody, translateGoose, translateCopilotCli, translateJunie, translateJetBrains, sanitizeJetBrainsArg };

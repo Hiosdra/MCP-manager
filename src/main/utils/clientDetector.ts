@@ -131,8 +131,8 @@ function getConfigPath(clientType: ClientType): string | null {
 
     case ClientType.CopilotCli:
       if (PLATFORM === 'win32')
-        return path.join(getAppData(), 'github-copilot', 'mcp.json');
-      return path.join(HOME, '.config', 'github-copilot', 'mcp.json');
+        return path.join(getUserProfile(), '.copilot', 'mcp-config.json');
+      return path.join(HOME, '.copilot', 'mcp-config.json');
 
     case ClientType.GeminiCli:
       if (PLATFORM === 'win32')

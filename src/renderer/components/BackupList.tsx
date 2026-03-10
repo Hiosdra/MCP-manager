@@ -75,7 +75,7 @@ export default function BackupList() {
     return backups.filter((b) => b.clientType === filterClient);
   }, [backups, filterClient]);
 
-  // Group backups by client type
+  // Group backups by client type, sorted alphabetically by label
   const grouped = useMemo(() => {
     const map = new Map<string, ConfigBackup[]>();
     for (const b of filtered) {
@@ -83,7 +83,12 @@ export default function BackupList() {
       list.push(b);
       map.set(b.clientType, list);
     }
-    return map;
+    const sorted = new Map(
+      Array.from(map.entries()).sort(([a], [b]) =>
+        (CLIENT_LABELS[a] || a).localeCompare(CLIENT_LABELS[b] || b)
+      )
+    );
+    return sorted;
   }, [filtered]);
 
   const handleRestore = async (backup: ConfigBackup) => {

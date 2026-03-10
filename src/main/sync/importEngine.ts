@@ -19,6 +19,7 @@ function importFromStandardJson(data: any, sectionKey: string): McpServerInput[]
 
   return Object.entries(section).map(([name, config]: [string, any]) => {
     const isSSE = config.url && !config.command;
+    const headers = config.headers && typeof config.headers === 'object' ? config.headers : {};
     return {
       name,
       command: config.command ?? '',
@@ -26,6 +27,7 @@ function importFromStandardJson(data: any, sectionKey: string): McpServerInput[]
       env: config.env && typeof config.env === 'object' ? config.env : {},
       transportType: (isSSE ? 'sse' : 'stdio') as TransportType,
       ...(isSSE ? { url: config.url } : {}),
+      ...(Object.keys(headers).length > 0 ? { headers } : {}),
     };
   });
 }
@@ -53,6 +55,7 @@ function importFromOpenCode(data: any): McpServerInput[] {
     const env = config.environment && typeof config.environment === 'object'
       ? config.environment
       : {};
+    const headers = config.headers && typeof config.headers === 'object' ? config.headers : {};
 
     return {
       name,
@@ -61,6 +64,7 @@ function importFromOpenCode(data: any): McpServerInput[] {
       env,
       transportType: (isRemote ? 'sse' : 'stdio') as TransportType,
       ...(isRemote ? { url: config.url } : {}),
+      ...(Object.keys(headers).length > 0 ? { headers } : {}),
     };
   });
 }
@@ -77,6 +81,7 @@ function importFromContinueDev(data: any): McpServerInput[] {
     .filter((entry: any) => entry && typeof entry === 'object' && entry.name)
     .map((entry: any) => {
       const isSSE = entry.url && !entry.command;
+      const headers = entry.headers && typeof entry.headers === 'object' ? entry.headers : {};
       return {
         name: entry.name,
         command: entry.command ?? '',
@@ -84,6 +89,7 @@ function importFromContinueDev(data: any): McpServerInput[] {
         env: entry.env && typeof entry.env === 'object' ? entry.env : {},
         transportType: (isSSE ? 'sse' : 'stdio') as TransportType,
         ...(isSSE ? { url: entry.url } : {}),
+        ...(Object.keys(headers).length > 0 ? { headers } : {}),
       };
     });
 }
@@ -94,6 +100,7 @@ function importFromGoose(data: any): McpServerInput[] {
 
   return Object.entries(section).map(([name, config]: [string, any]) => {
     const isSSE = config.uri && !config.cmd;
+    const headers = config.headers && typeof config.headers === 'object' ? config.headers : {};
     return {
       name,
       command: config.cmd ?? '',
@@ -101,6 +108,7 @@ function importFromGoose(data: any): McpServerInput[] {
       env: config.envs && typeof config.envs === 'object' ? config.envs : {},
       transportType: (isSSE ? 'sse' : 'stdio') as TransportType,
       ...(isSSE ? { url: config.uri } : {}),
+      ...(Object.keys(headers).length > 0 ? { headers } : {}),
     };
   });
 }
@@ -143,6 +151,7 @@ function importFromCopilotCli(data: any): McpServerInput[] {
 
   return Object.entries(section).map(([name, config]: [string, any]) => {
     const isHTTP = config.type === 'http';
+    const headers = config.headers && typeof config.headers === 'object' ? config.headers : {};
     return {
       name,
       command: config.command ?? '',
@@ -150,6 +159,7 @@ function importFromCopilotCli(data: any): McpServerInput[] {
       env: config.env && typeof config.env === 'object' ? config.env : {},
       transportType: (isHTTP ? 'sse' : 'stdio') as TransportType,
       ...(isHTTP ? { url: config.url } : {}),
+      ...(Object.keys(headers).length > 0 ? { headers } : {}),
     };
   });
 }

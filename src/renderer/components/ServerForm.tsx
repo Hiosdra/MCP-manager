@@ -22,6 +22,9 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
   const [env, setEnv] = useState<Array<{ key: string; value: string }>>(
     server ? Object.entries(server.env).map(([key, value]) => ({ key, value })) : []
   );
+  const [headers, setHeaders] = useState<Array<{ key: string; value: string }>>(
+    server ? Object.entries(server.headers ?? {}).map(([key, value]) => ({ key, value })) : []
+  );
   const [errors, setErrors] = useState<FormErrors>({});
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -56,6 +59,11 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
       if (key.trim()) envRecord[key.trim()] = value;
     });
 
+    const headersRecord: Record<string, string> = {};
+    headers.forEach(({ key, value }) => {
+      if (key.trim()) headersRecord[key.trim()] = value;
+    });
+
     const input: McpServerInput = {
       name: name.trim(),
       command: command.trim(),
@@ -63,6 +71,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
       env: envRecord,
       transportType,
       ...(transportType === 'sse' ? { url: url.trim() } : {}),
+      ...(transportType === 'sse' && Object.keys(headersRecord).length > 0 ? { headers: headersRecord } : {}),
     };
 
     try {
@@ -95,6 +104,15 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
     const updated = [...env];
     updated[index] = { ...updated[index], [field]: value };
     setEnv(updated);
+  };
+
+  // Header helpers
+  const addHeader = () => setHeaders([...headers, { key: '', value: '' }]);
+  const removeHeader = (index: number) => setHeaders(headers.filter((_, i) => i !== index));
+  const updateHeader = (index: number, field: 'key' | 'value', value: string) => {
+    const updated = [...headers];
+    updated[index] = { ...updated[index], [field]: value };
+    setHeaders(updated);
   };
 
   const inputClass =
@@ -170,6 +188,54 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
                 className={inputClass}
               />
               {errors.url && <p className={errorClass}>{errors.url}</p>}
+            </div>
+          )}
+
+          {transportType === 'sse' && (
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className={labelClass}>Headers</label>
+                <button
+                  type="button"
+                  onClick={addHeader}
+                  className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  + Add header
+                </button>
+              </div>
+              {headers.length === 0 && (
+                <p className="text-sm text-zinc-600">No headers added.</p>
+              )}
+              <div className="space-y-2">
+                {headers.map((entry, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={entry.key}
+                      onChange={(e) => updateHeader(i, 'key', e.target.value)}
+                      placeholder="Header-Name"
+                      className={`${inputClass} w-2/5`}
+                    />
+                    <span className="text-zinc-600">:</span>
+                    <input
+                      type="text"
+                      value={entry.value}
+                      onChange={(e) => updateHeader(i, 'value', e.target.value)}
+                      placeholder="value"
+                      className={inputClass}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeHeader(i)}
+                      className="text-zinc-600 hover:text-red-400 transition-colors flex-shrink-0"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

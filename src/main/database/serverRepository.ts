@@ -24,8 +24,8 @@ export class ServerRepository {
     const now = new Date().toISOString();
 
     this.db.prepare(`
-      INSERT INTO servers (id, name, command, args, env, transport_type, url, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO servers (id, name, command, args, env, transport_type, url, headers, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       id,
       input.name,
@@ -34,6 +34,7 @@ export class ServerRepository {
       JSON.stringify(input.env),
       input.transportType,
       input.url || null,
+      JSON.stringify(input.headers ?? {}),
       now,
       now,
     );
@@ -50,7 +51,7 @@ export class ServerRepository {
     const now = new Date().toISOString();
 
     this.db.prepare(`
-      UPDATE servers SET name = ?, command = ?, args = ?, env = ?, transport_type = ?, url = ?, updated_at = ?
+      UPDATE servers SET name = ?, command = ?, args = ?, env = ?, transport_type = ?, url = ?, headers = ?, updated_at = ?
       WHERE id = ?
     `).run(
       input.name,
@@ -59,6 +60,7 @@ export class ServerRepository {
       JSON.stringify(input.env),
       input.transportType,
       input.url || null,
+      JSON.stringify(input.headers ?? {}),
       now,
       id,
     );
@@ -107,7 +109,7 @@ export class ServerRepository {
     const rows = this.db.prepare(`
       SELECT st.server_id, st.client_type, st.enabled,
              s.id, s.name, s.command, s.args, s.env,
-             s.transport_type, s.url, s.created_at, s.updated_at
+             s.transport_type, s.url, s.headers, s.created_at, s.updated_at
       FROM sync_targets st
       JOIN servers s ON st.server_id = s.id
       WHERE st.enabled = 1
@@ -122,6 +124,7 @@ export class ServerRepository {
   }
 
   private rowToServer(row: any): McpServer {
+    const headers = row.headers ? JSON.parse(row.headers) : {};
     return {
       id: row.id,
       name: row.name,
@@ -130,6 +133,7 @@ export class ServerRepository {
       env: JSON.parse(row.env),
       transportType: row.transport_type as McpServer['transportType'],
       url: row.url || undefined,
+      ...(Object.keys(headers).length > 0 ? { headers } : {}),
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     };

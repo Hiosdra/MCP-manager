@@ -35,6 +35,7 @@ export function initDatabase(dbPath?: string): Database.Database {
       env TEXT NOT NULL DEFAULT '{}',
       transport_type TEXT NOT NULL DEFAULT 'stdio',
       url TEXT,
+      headers TEXT NOT NULL DEFAULT '{}',
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );

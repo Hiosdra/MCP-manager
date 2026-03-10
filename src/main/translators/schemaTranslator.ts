@@ -18,6 +18,7 @@ function translateStandard(server: McpServer): any {
   if (server.transportType === 'sse') {
     return {
       url: server.url,
+      ...(Object.keys(server.headers ?? {}).length > 0 ? { headers: server.headers } : {}),
       ...(Object.keys(server.env).length > 0 ? { env: server.env } : {}),
     };
   }
@@ -34,6 +35,7 @@ function translateZed(server: McpServer): any {
   if (server.transportType === 'sse') {
     return {
       url: server.url,
+      ...(Object.keys(server.headers ?? {}).length > 0 ? { headers: server.headers } : {}),
       ...(Object.keys(server.env).length > 0 ? { env: server.env } : {}),
     };
   }
@@ -54,6 +56,9 @@ function translateContinueDev(server: McpServer): any {
     entry.command = server.command;
     entry.args = server.args;
   }
+  if (Object.keys(server.headers ?? {}).length > 0) {
+    entry.headers = server.headers;
+  }
   if (Object.keys(server.env).length > 0) {
     entry.env = { ...server.env };
   }
@@ -67,6 +72,7 @@ function translateOpenCode(server: McpServer): any {
     return {
       type: 'remote',
       url: server.url,
+      ...(Object.keys(server.headers ?? {}).length > 0 ? { headers: server.headers } : {}),
       ...(Object.keys(server.env).length > 0 ? { environment: server.env } : {}),
       enabled: true,
     };
@@ -85,6 +91,7 @@ function translateCody(server: McpServer): any {
   if (server.transportType === 'sse') {
     return {
       url: server.url,
+      ...(Object.keys(server.headers ?? {}).length > 0 ? { headers: server.headers } : {}),
       ...(Object.keys(server.env).length > 0 ? { env: server.env } : {}),
     };
   }
@@ -101,6 +108,7 @@ function translateGoose(server: McpServer): any {
   if (server.transportType === 'sse') {
     return {
       uri: server.url,
+      ...(Object.keys(server.headers ?? {}).length > 0 ? { headers: server.headers } : {}),
       ...(Object.keys(server.env).length > 0 ? { envs: server.env } : {}),
     };
   }
@@ -119,7 +127,7 @@ function translateCopilotCli(server: McpServer): any {
       tools: ['*'],
       type: 'http',
       url: server.url,
-      headers: {},
+      headers: server.headers ?? {},
       source: 'user',
     };
   }
@@ -140,6 +148,7 @@ function translateJunie(server: McpServer): any {
     return {
       type: 'sse',
       url: server.url,
+      ...(Object.keys(server.headers ?? {}).length > 0 ? { headers: server.headers } : {}),
       ...(Object.keys(server.env).length > 0 ? { env: server.env } : {}),
     };
   }

@@ -23,7 +23,7 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
     server ? Object.entries(server.env).map(([key, value]) => ({ key, value })) : []
   );
   const [headers, setHeaders] = useState<Array<{ key: string; value: string }>>(
-    server ? Object.entries(server.headers ?? {}).map(([key, value]) => ({ key, value })) : []
+    server ? Object.entries(server.headers ?? {}).map(([key, value]) => ({ key, value: value ?? '' })) : []
   );
   const [errors, setErrors] = useState<FormErrors>({});
   const [saving, setSaving] = useState(false);
@@ -59,9 +59,9 @@ export default function ServerForm({ server, onSave, onCancel }: ServerFormProps
       if (key.trim()) envRecord[key.trim()] = value;
     });
 
-    const headersRecord: Record<string, string> = {};
+    const headersRecord: Record<string, string | null> = {};
     headers.forEach(({ key, value }) => {
-      if (key.trim()) headersRecord[key.trim()] = value;
+      if (key.trim()) headersRecord[key.trim()] = value === '' ? null : value;
     });
 
     const input: McpServerInput = {

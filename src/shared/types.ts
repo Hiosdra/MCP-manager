@@ -27,7 +27,7 @@ export interface McpServer {
   env: Record<string, string>;
   transportType: TransportType;
   url?: string; // For SSE transport
-  headers?: Record<string, string>; // For SSE transport
+  headers?: Record<string, string | null>; // For SSE transport
   createdAt: string;
   updatedAt: string;
 }
@@ -40,7 +40,7 @@ export interface McpServerInput {
   env: Record<string, string>;
   transportType: TransportType;
   url?: string;
-  headers?: Record<string, string>;
+  headers?: Record<string, string | null>;
 }
 
 // A sync target: which server is synced to which client
